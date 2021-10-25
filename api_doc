@@ -1,0 +1,51 @@
+/api/user GET return all renters info. This api is for owner to use
+curl --location --request GET 'http://127.0.0.1:8181/api/user' \
+     --header 'Content-Type: text/plain' \
+     --data-raw '{}'
+
+/api/user/ GET return specific renter info
+curl --location --request GET 'http://127.0.0.1:8181/api/user/zsun273' \
+--header 'Content-Type: text/plain' \
+--data-raw '{}'
+
+/api/register POST register an account
+curl --location --request POST 'http://127.0.0.1:8181/api/register' \
+--header 'Connection: keep-alive' \
+--header 'Pragma: no-cache' \
+--header 'Cache-Control: no-cache' \
+--header 'sec-ch-ua: " Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"' \
+--header 'sec-ch-ua-mobile: ?0' \
+--header 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36' \
+--header 'Content-Type: application/json' \
+--header 'Accept: */*' \
+--header 'Origin: http://127.0.0.1:3000' \
+--data-raw '{"username":"1111","password":"1111","firstname":"11111","lastname":"11111","email":"11111","gender":"male","balance":11111, "user_type": "renter"}'
+
+response: true(success)
+          false(failure)
+
+/api/login POST login by using username and password
+curl --location --request POST 'http://127.0.0.1:8181/api/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username": "hyuan63",
+    "password": "12345"
+}'
+response: true(username and password successfully matched)
+          false(username doesn't exist or username and password doesn't match)
+
+
+/api/repair GET get all maintenance requirements order by priority and create time.
+curl 'http://127.0.0.1:8181/api/repair' \
+  -H 'Connection: keep-alive' \
+  -H 'sec-ch-ua: " Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  --compressed
+
+response: [[1,"Stucked Toilet",1,"processing","2021-09-27T08:20:00.000+00:00","2021-09-27T08:20:00.000+00:00","high"]]
+
+/repair/{priority} GET get maintenance requirements with specific priority.
+priority from high to low: 0,1,2
+
+/api/maintenance POST
