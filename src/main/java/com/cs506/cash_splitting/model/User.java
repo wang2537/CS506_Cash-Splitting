@@ -16,9 +16,6 @@ public class User {
     private String username;
 
     @Column
-    private String password;
-
-    @Column
     private String firstname;
 
     @Column
@@ -28,21 +25,22 @@ public class User {
     private String email = "example@example.com";
 
     @Column
-    private double balance = 0;
+    private double total_balance = 0;
 
     @Column
-    private String gender = "prefer not to say";
+    private double borrowed = 0;
 
     @Column
-    private String user_type = "renter";
+    private double lent = 0;
 
     @Column
-    private String signed = "none";
-
-    @Column
-    private String address = "";
+    private String default_currency = "USD";
 
     public int getUid() {return uid;}
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
 
     public String getUsername() {
         return username;
@@ -50,14 +48,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstname() {
@@ -84,39 +74,35 @@ public class User {
         this.email = email;
     }
 
-    public double getBalance() { return balance; }
-
-    public void setBalance(double balance) { this.balance = balance; }
-
-    public String getGender() {
-        return gender;
+    public double getBorrowed() {
+        return borrowed;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setBorrowed(double borrowed) {
+        this.borrowed = borrowed;
     }
 
-    public String getUser_type() {
-        return user_type;
+    public double getLent() {
+        return lent;
     }
 
-    public void setUser_type(String user_type) {
-        this.user_type = user_type;
+    public void setLent(double lent) {
+        this.lent = lent;
     }
 
-    public String getSigned() {
-        return signed;
+    public double getTotal_balance() {
+        return total_balance;
     }
 
-    public void setSigned(String signed) {
-        this.signed = signed;
+    public void setTotal_balance(double total_balance) {
+        this.total_balance = total_balance;
     }
 
-    public String getAddress() {
-        return address;
+    public String getDefault_currency() {
+        return default_currency;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDefault_currency(String default_currency) {
+        this.default_currency = default_currency;
     }
 }

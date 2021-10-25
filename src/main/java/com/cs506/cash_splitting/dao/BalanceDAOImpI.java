@@ -52,7 +52,6 @@ public class BalanceDAOImpI implements BalanceDAO{
     public boolean change_pay(Balance balance) {
         Session currSession = entityManager.unwrap(Session.class);
         User user = currSession.get(User.class, balance.getDestination_id());
-        user.setBalance(user.getBalance() + balance.getAmount());
         currSession.update(user);
         currSession.saveOrUpdate(balance);
         return true;

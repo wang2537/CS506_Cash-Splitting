@@ -20,7 +20,7 @@ public class UserDAOImpl implements UserDAO{
     @ResponseBody
     public Object get() {
         Session currSession = entityManager.unwrap(Session.class);
-        SQLQuery query = currSession.createSQLQuery("select * from userdb where userdb.user_type = 'renter'").addEntity(User.class);;
+        SQLQuery query = currSession.createSQLQuery("select * from userdb").addEntity(User.class);;
         List <User> userList = new ArrayList<>();
         List list = query.list();
         for (Object o : list) {

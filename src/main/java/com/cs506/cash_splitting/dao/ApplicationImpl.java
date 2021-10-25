@@ -59,14 +59,11 @@ public class ApplicationImpl implements ApplicationDAO{
             Property property = currSession.get(Property.class, application.getPid());
             property.setRid(application.getRid());
             User renter = currSession.get(User.class, application.getRid());
-            renter.setAddress(property.getAddress());
-            renter.setSigned("accepted");
             currSession.update(property);
             currSession.update(renter);
         }
         if (application.getStatus().equals("denied")) {
             User renter = currSession.get(User.class, application.getRid());
-            renter.setSigned("rejected");
             currSession.update(renter);
         }
         originApplication.setStatus(application.getStatus());
@@ -81,18 +78,15 @@ public class ApplicationImpl implements ApplicationDAO{
         currSession.saveOrUpdate(application);
         if (application.getStatus().equals("processing")) {
             User renter = currSession.get(User.class, application.getRid());
-            renter.setSigned("pending");
             currSession.update(renter);
 
         }
         else if (application.getStatus().equals("approved")) {
             User renter = currSession.get(User.class, application.getRid());
-            renter.setSigned("accepted");
             currSession.update(renter);
         }
         else if (application.getStatus().equals("denied")) {
             User renter = currSession.get(User.class, application.getRid());
-            renter.setSigned("rejected");
             currSession.update(renter);
         }
 
