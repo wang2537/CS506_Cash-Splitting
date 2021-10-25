@@ -1,1 +1,1 @@
-# Cash-Spliting
+# Cash-Splitting
