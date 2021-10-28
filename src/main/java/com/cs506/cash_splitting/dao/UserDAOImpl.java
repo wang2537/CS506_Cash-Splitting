@@ -1,4 +1,5 @@
 package com.cs506.cash_splitting.dao;
+import com.cs506.cash_splitting.model.Password;
 import com.cs506.cash_splitting.model.User;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -7,11 +8,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Repository
-public class UserDAOImpl implements UserDAO{
+public class UserDAOImpl implements UserDAO {
 
     @Autowired
     private EntityManager entityManager;
@@ -20,8 +24,9 @@ public class UserDAOImpl implements UserDAO{
     @ResponseBody
     public Object get() {
         Session currSession = entityManager.unwrap(Session.class);
-        SQLQuery query = currSession.createSQLQuery("select * from userdb").addEntity(User.class);;
-        List <User> userList = new ArrayList<>();
+        SQLQuery query = currSession.createSQLQuery("select * from userdb").addEntity(User.class);
+        ;
+        List<User> userList = new ArrayList<>();
         List list = query.list();
         for (Object o : list) {
             User user = (User) o;
@@ -39,11 +44,24 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
-    public boolean addOrUpdate(User user) {
+    public boolean addOrUpdateUser(User user) {
         Session currSession = entityManager.unwrap(Session.class);
         currSession.saveOrUpdate(user);
         return true;
     }
+
+
+    @Override
+    public boolean addOrUpdatePassword(Password password) {
+        Password record = new Password();
+        int hash_password = password.getPassword().hashCode();
+        record.setPassword(String.valueOf(hash_password));
+        record.setUid(password.getUid());
+        Session currSession = entityManager.unwrap(Session.class);
+        currSession.saveOrUpdate(record);
+        return true;
+    }
+
 
     @Override
     public String getUserName(int uid) {
@@ -54,10 +72,13 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     public List<?> check(String username, String password) {
+        int uid = this.get_uid(username);
         Session currSession = entityManager.unwrap(Session.class);
-        Query query = currSession.createSQLQuery("select password from userdb where username = :name and password = :code ");
-        query.setParameter("name", username);
-        query.setParameter("code", password);
+        int encrypt_password = password.hashCode();
+        String hash_password = String.valueOf(encrypt_password);
+        Query query = currSession.createSQLQuery("select password from passworddb where uid = :userid and password = :code ");
+        query.setParameter("userid", uid);
+        query.setParameter("code", hash_password);
         return query.getResultList();
     }
 
@@ -68,10 +89,11 @@ public class UserDAOImpl implements UserDAO{
                 " where username = :name").addEntity(User.class);
         query.setParameter("name", username);
         List list = query.list();
-        if (list.isEmpty()){
+        if (list.isEmpty()) {
             return -1;
         }
         User user = (User) list.get(0);
         return user.getUid();
     }
+
 }

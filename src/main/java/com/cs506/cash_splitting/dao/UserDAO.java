@@ -1,13 +1,16 @@
 package com.cs506.cash_splitting.dao;
 
+import com.cs506.cash_splitting.model.Password;
 import com.cs506.cash_splitting.model.User;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface UserDAO {
     Object get();
     Object get(String username);
-    boolean addOrUpdate(User user);
+    boolean addOrUpdateUser(User user);
+    boolean addOrUpdatePassword(Password password);
     String getUserName (int uid);
     List<?> check(String username, String password);
 

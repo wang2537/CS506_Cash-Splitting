@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS transactiondb;
 DROP TABLE IF EXISTS groupdb;
 DROP TABLE IF EXISTS userdb;
 
+
 CREATE TABLE userdb
 (
     uid       INT NOT NULL AUTO_INCREMENT,  -- auto_increment start with 1
@@ -31,7 +32,7 @@ CREATE TABLE passworddb
 (
     pid             INT NOT NULL AUTO_INCREMENT,  -- auto_increment start with 1
     uid             INT NOT NULL,
-    password        binary(20) NOT NULL,
+    password        VARCHAR(50) NOT NULL,
 
     PRIMARY KEY (pid),
     FOREIGN KEY (uid)

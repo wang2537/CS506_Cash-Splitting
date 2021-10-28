@@ -1,5 +1,6 @@
 package com.cs506.cash_splitting.controller;
 
+import com.cs506.cash_splitting.model.Password;
 import com.cs506.cash_splitting.model.User;
 import com.cs506.cash_splitting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +16,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/user")
-    public Object get() {
-        return userService.get();
-    }
-
-    @GetMapping("/user/{username}")
-    public Object get(@PathVariable String username) {
-        return userService.get(username);
-    }
-
-    @PostMapping("/signup")
+    @PostMapping("/signup/user")
     public boolean add(@RequestBody User user) {
-        return userService.addOrUpdate(user);
+        return userService.addOrUpdateUser(user);
     }
 
+    @PostMapping("/signup/password")
+    public boolean add(@RequestBody Password password) {
+        return userService.addOrUpdatePassword(password);
+    }
     @PostMapping("/login")
     public Map<Object,Object> identify(@RequestBody Map<String, String> map) {
         HashMap<Object,Object> result = new HashMap<>();
@@ -43,12 +38,6 @@ public class UserController {
                 MessageDigest md = MessageDigest.getInstance("md5");
                 byte[] md5 =  md.digest(token.getBytes());
                 result.put("token", md5);
-                if (map.get("username").equals("admin")){
-                    result.put("is_owner", true);
-                }
-                else {
-                    result.put("is_owner", false);
-                }
                 return result;
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();

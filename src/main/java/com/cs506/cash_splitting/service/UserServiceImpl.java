@@ -1,6 +1,7 @@
 package com.cs506.cash_splitting.service;
 
 import com.cs506.cash_splitting.dao.UserDAO;
+import com.cs506.cash_splitting.model.Password;
 import com.cs506.cash_splitting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,15 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public boolean addOrUpdate(User user) {
-        return userdao.addOrUpdate(user);
+    public boolean addOrUpdateUser(User user) {
+        return userdao.addOrUpdateUser(user);
     }
 
-
+    @Transactional
+    @Override
+    public boolean addOrUpdatePassword(Password password) {
+        return userdao.addOrUpdatePassword(password);
+    }
     @Override
     public boolean login(String username, String password) {
         return userdao.check(username, password).isEmpty();
