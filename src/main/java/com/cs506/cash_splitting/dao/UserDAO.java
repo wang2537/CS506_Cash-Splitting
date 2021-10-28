@@ -12,6 +12,7 @@ public interface UserDAO {
     boolean addOrUpdateUser(User user);
     boolean addOrUpdatePassword(Password password);
     String getUserName (int uid);
+    int get_uid(String username);
     List<?> check(String username, String password);
 
 }

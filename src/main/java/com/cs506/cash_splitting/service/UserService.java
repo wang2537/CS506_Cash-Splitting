@@ -9,5 +9,6 @@ public interface UserService {
     String getUserName(int uid);
     boolean addOrUpdateUser(User user);
     boolean addOrUpdatePassword(Password password);
+    int getUid(String username);
     boolean login(String username, String password);
 }

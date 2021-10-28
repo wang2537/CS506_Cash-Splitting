@@ -17,8 +17,11 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/signup/user")
-    public boolean add(@RequestBody User user) {
-        return userService.addOrUpdateUser(user);
+    public Map<Object,Object> add(@RequestBody User user) {
+        userService.addOrUpdateUser(user);
+        HashMap<Object,Object> result = new HashMap<>();
+        result.put("uid", userService.getUid(user.getUsername()));
+        return result;
     }
 
     @PostMapping("/signup/password")
@@ -38,6 +41,8 @@ public class UserController {
                 MessageDigest md = MessageDigest.getInstance("md5");
                 byte[] md5 =  md.digest(token.getBytes());
                 result.put("token", md5);
+                int uid = userService.getUid(map.get("username"));
+                result.put("uid",uid);
                 return result;
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();

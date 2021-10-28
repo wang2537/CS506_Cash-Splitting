@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserService{
         return userdao.getUserName(uid);
     }
 
+    @Override
+    public int getUid(String username) {
+        return userdao.get_uid(username);
+    }
+
     @Transactional
     @Override
     public boolean addOrUpdateUser(User user) {
