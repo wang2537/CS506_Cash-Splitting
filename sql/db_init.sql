@@ -70,9 +70,10 @@ CREATE TABLE friend_appdb
 
 CREATE TABLE groupdb
 (
-    gid             INT NOT NULL AUTO_INCREMENT,
+    gid             INT NOT NULL,
     uid             INT NOT NULL,
     groupname       VARCHAR(50) NOT NULL,
+    status          ENUM('valid', 'invalid') NOT NULL DEFAULT 'valid',
 
     PRIMARY KEY (gid, uid),
     FOREIGN KEY (uid)

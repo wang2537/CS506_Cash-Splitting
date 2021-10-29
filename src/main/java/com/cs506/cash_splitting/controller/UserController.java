@@ -1,5 +1,6 @@
 package com.cs506.cash_splitting.controller;
 
+import com.cs506.cash_splitting.model.Group;
 import com.cs506.cash_splitting.model.Password;
 import com.cs506.cash_splitting.model.User;
 import com.cs506.cash_splitting.service.UserService;
@@ -28,6 +29,7 @@ public class UserController {
     public boolean add(@RequestBody Password password) {
         return userService.addOrUpdatePassword(password);
     }
+
     @PostMapping("/login")
     public Map<Object,Object> identify(@RequestBody Map<String, String> map) {
         HashMap<Object,Object> result = new HashMap<>();
@@ -51,4 +53,22 @@ public class UserController {
         return result;
     }
 
+    @PostMapping("/group")
+    public boolean createGroup(@RequestBody Group group) {
+        return userService.createGroup(group);}
+
+    @PostMapping("/group/add/{gid}/{uid}")
+    public boolean addMember(@PathVariable("gid") int gid, @PathVariable("uid") int uid){
+        return userService.addMember(gid, uid);
+    }
+
+    @PostMapping("/group/quit/{gid}/{uid}")
+    public boolean quit(@PathVariable("gid") int gid, @PathVariable("uid") int uid){
+        return userService.quitGroup(gid, uid);
+    }
+
+    @PostMapping("/group/namechange/{gid}/{newGroupName}")
+    public boolean changeGroupName(@PathVariable("gid") int gid, @PathVariable("newGroupName") String newGroupName){
+        return userService.changeGroupname(gid, newGroupName);
+    }
 }

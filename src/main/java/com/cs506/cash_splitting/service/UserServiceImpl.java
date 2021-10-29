@@ -1,6 +1,7 @@
 package com.cs506.cash_splitting.service;
 
 import com.cs506.cash_splitting.dao.UserDAO;
+import com.cs506.cash_splitting.model.Group;
 import com.cs506.cash_splitting.model.Password;
 import com.cs506.cash_splitting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +51,20 @@ public class UserServiceImpl implements UserService{
     public boolean login(String username, String password) {
         return userdao.check(username, password).isEmpty();
     }
+
+    @Transactional
+    @Override
+    public boolean createGroup(Group group) {return userdao.createGroup(group);}
+
+    @Transactional
+    @Override
+    public boolean addMember(int gid, int uid) {return userdao.addMember(gid, uid);}
+
+    @Transactional
+    @Override
+    public boolean quitGroup(int gid, int uid) {return userdao.quitGroup(gid, uid);}
+
+    @Transactional
+    @Override
+    public boolean changeGroupname(int gid, String newGroupName) {return userdao.changeGroupname(gid, newGroupName);}
 }
