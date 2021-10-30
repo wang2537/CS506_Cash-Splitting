@@ -58,7 +58,6 @@ CREATE TABLE friend_appdb
     source              INT NOT NULL,
     destination         INT NOT NULL,
     status              ENUM('approved', 'denied', 'pending') NOT NULL DEFAULT 'pending',
-    create_time         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modify_time         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (aid),
@@ -107,3 +106,21 @@ VALUES ('yuegu', 'yueyu', 'wang');
 
 INSERT INTO userdb(username, firstname, lastname)
 VALUES ('leo', 'zhuocheng', 'sun');
+
+INSERT INTO userdb(username, firstname, lastname)
+VALUES ('hyuan63', 'haozhan', 'yuan');
+
+INSERT INTO userdb(username, firstname, lastname)
+VALUES ('ccc', 'cecheng', 'chen');
+
+INSERT INTO userdb(username, firstname, lastname)
+VALUES ('lhg', 'heguang', 'lin');
+
+INSERT INTO userdb(username, firstname, lastname)
+VALUES ('phyTA', 'kairui', 'zhang');
+
+INSERT INTO userdb(username, firstname, lastname)
+VALUES ('Insipid', 'xulin', 'yang');
+
+INSERT INTO userdb(username, firstname, lastname)
+VALUES ('Zhijiang', 'zihan', 'zhu');

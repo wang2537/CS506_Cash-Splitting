@@ -1,9 +1,7 @@
 package com.cs506.cash_splitting.service;
 
 import com.cs506.cash_splitting.dao.UserDAO;
-import com.cs506.cash_splitting.model.Group;
-import com.cs506.cash_splitting.model.Password;
-import com.cs506.cash_splitting.model.User;
+import com.cs506.cash_splitting.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,4 +65,32 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public boolean changeGroupname(int gid, String newGroupName) {return userdao.changeGroupname(gid, newGroupName);}
+
+    @Transactional
+    @Override
+    public boolean sendFriendRequest(FriendApp friendApp) {
+        return userdao.sendFriendRequest(friendApp);
+    }
+
+    @Override
+    public Object getFriendRequest(int uid) {
+        return userdao.getFriendRequest(uid);
+    }
+
+    @Transactional
+    @Override
+    public Object updateFriendApp(FriendApp friendApp) {
+        return userdao.updateFriendApp(friendApp);
+    }
+
+    @Transactional
+    @Override
+    public Object updateFriend(Friend friend) {
+        return userdao.updateFriend(friend);
+    }
+
+    @Override
+    public Object getFriend(int uid) {
+        return userdao.getFriend(uid);
+    }
 }

@@ -1,8 +1,6 @@
 package com.cs506.cash_splitting.controller;
 
-import com.cs506.cash_splitting.model.Group;
-import com.cs506.cash_splitting.model.Password;
-import com.cs506.cash_splitting.model.User;
+import com.cs506.cash_splitting.model.*;
 import com.cs506.cash_splitting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -71,4 +69,33 @@ public class UserController {
     public boolean changeGroupName(@PathVariable("gid") int gid, @PathVariable("newGroupName") String newGroupName){
         return userService.changeGroupname(gid, newGroupName);
     }
+
+    @GetMapping("/{uid}/friend")
+    public Object getFriend(@PathVariable("uid") int uid) {
+        return userService.getFriend(uid);
+    }
+
+    @PostMapping("/newFriendApp")
+    public boolean newFriendRequest(@RequestBody FriendApp friendApp) {
+        return userService.sendFriendRequest(friendApp);
+    }
+
+    @GetMapping("/{uid}/friendApp")
+    public Object getFriendRequest(@PathVariable("uid") int uid) {
+        return userService.getFriendRequest(uid);
+    }
+
+    @PostMapping("/friendApp/update")
+    public Object updateFriendApp(@RequestBody FriendApp friendApp) {
+        return userService.updateFriendApp(friendApp);
+    }
+
+    @PostMapping("/friend/update")
+    public Object updateFriend(@RequestBody Friend friend) {
+        return userService.updateFriend(friend);
+    }
+
+
+
+
 }

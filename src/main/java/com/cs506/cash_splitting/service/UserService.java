@@ -1,8 +1,6 @@
 package com.cs506.cash_splitting.service;
 
-import com.cs506.cash_splitting.model.Group;
-import com.cs506.cash_splitting.model.Password;
-import com.cs506.cash_splitting.model.User;
+import com.cs506.cash_splitting.model.*;
 
 public interface UserService {
     Object get();
@@ -17,4 +15,10 @@ public interface UserService {
     boolean addMember(int gid, int uid);
     boolean quitGroup(int gid, int uid);
     boolean changeGroupname(int gid, String newGroupName);
+
+    boolean sendFriendRequest(FriendApp friendApp);
+    Object getFriendRequest(int uid);
+    Object updateFriendApp(FriendApp friendApp);
+    Object updateFriend(Friend friend);
+    Object getFriend(int uid);
 }

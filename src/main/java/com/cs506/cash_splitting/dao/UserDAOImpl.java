@@ -1,7 +1,5 @@
 package com.cs506.cash_splitting.dao;
-import com.cs506.cash_splitting.model.Group;
-import com.cs506.cash_splitting.model.Password;
-import com.cs506.cash_splitting.model.User;
+import com.cs506.cash_splitting.model.*;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -189,4 +188,120 @@ public class UserDAOImpl implements UserDAO {
         return true;
     }
 
+    @Override
+    public boolean sendFriendRequest(FriendApp friendApp) {
+        Session currSession = entityManager.unwrap(Session.class);
+        SQLQuery query = currSession.
+                createSQLQuery("select * from friend_appdb where source = :source and destination = :destination").
+                addEntity(FriendApp.class);
+        query.setParameter("source", friendApp.getSource());
+        query.setParameter("destination", friendApp.getDestination());
+        List friend_app_list = query.list();
+        if (friend_app_list.isEmpty()) {
+            currSession.saveOrUpdate(friendApp);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    @ResponseBody
+    public Object getFriendRequest(int uid) {
+        Session currSession = entityManager.unwrap(Session.class);
+        SQLQuery query = currSession.
+                createSQLQuery("select * from friend_appdb where source = :source and status = 'pending'").
+                addEntity(FriendApp.class);
+        query.setParameter("source", uid);
+        List<FriendApp> friendAppList = new ArrayList<>();
+        List list = query.list();
+        for (Object o : list){
+            FriendApp friendApp = (FriendApp) o;
+            friendAppList.add(friendApp);
+        }
+        return friendAppList;
+    }
+
+    @Override
+    public Object updateFriendApp(FriendApp friendApp) {
+        Session currSession = entityManager.unwrap(Session.class);
+        FriendApp originApp = currSession.get(FriendApp.class, friendApp.getAid());
+        if (originApp.getStatus().equals("denied") || originApp.getStatus().equals("approved")) {
+            return false;
+        }
+        if (originApp.getStatus().equals("pending")) {
+            originApp.setStatus(friendApp.getStatus());
+            if (originApp.getStatus().equals("denied")) {
+                return "denied friend";
+            }
+            if (originApp.getStatus().equals("approved")) {
+                SQLQuery query = currSession.
+                        createSQLQuery("select * from frienddb where friend_id = :friend_id and uid = :uid").
+                        addEntity(Friend.class);
+                query.setParameter("uid", friendApp.getSource());
+                query.setParameter("friend_id", friendApp.getDestination());
+                List<Friend> friendList = new ArrayList<>();
+                List list = query.list();
+                if (list.isEmpty()) {
+                    Friend newFriend = new Friend(originApp.getDestination(), originApp.getSource());
+                    currSession.saveOrUpdate(newFriend);
+                    return true;
+                } else {
+                    for (Object o : list){
+                        Friend friend = (Friend) o;
+                        friendList.add(friend);
+                    }
+                    updateFriend(friendList.get(0));
+                }
+            }
+            currSession.saveOrUpdate(originApp);
+        }
+        return false;
+    }
+
+    @Override
+    public Object updateFriend(Friend friend) {
+        Session currSession = entityManager.unwrap(Session.class);
+        SQLQuery query = currSession.
+                createSQLQuery("select * from frienddb where friend_id = :friend_id and uid = :uid").
+                addEntity(Friend.class);
+        query.setParameter("uid", friend.getUid());
+        query.setParameter("friend_id", friend.getFriend_id());
+        List<Friend> friendList = new ArrayList<>();
+        List list = query.list();
+        for (Object o : list){
+            Friend tmp = (Friend) o;
+            friendList.add(tmp);
+        }
+        Friend originFriend = friendList.get(0);
+        if (friend.getStatus().equals("invalid") && originFriend.getStatus().equals("valid")) {
+            originFriend.setStatus(friend.getStatus()); // delete friend
+            currSession.saveOrUpdate(originFriend);
+            return "successfully delete friend";
+        }
+        if (friend.getStatus().equals("valid") && originFriend.getStatus().equals("invalid")) {
+            originFriend.setStatus(friend.getStatus()); // refriend
+            currSession.saveOrUpdate(originFriend);
+            return "successfully odd old friend";
+        }
+        return "nothing changed";
+    }
+
+    @Override
+    @ResponseBody
+    public Object getFriend(int uid) {
+        Session currSession = entityManager.unwrap(Session.class);
+        SQLQuery query = currSession.
+                createSQLQuery("select friend_id from frienddb where uid = :uid");
+        query.setParameter("uid", uid);
+        List list = query.list();
+        List<User> friendList = new ArrayList<>();
+        for (Object o : list){
+            int friend_id = (Integer) o;
+            friendList.add(currSession.get(User.class, friend_id));
+        }
+        User user = currSession.get(User.class, uid);
+        return new FriendList(user, friendList);
+
+    }
 }
