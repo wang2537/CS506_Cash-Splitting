@@ -61,7 +61,6 @@ public class UserTest extends CashApplicationTests{
 
     @Test
     @Transactional
-    @Rollback(value = false)
     public void testSignUpAndLogin(){
         User user = this.createUser();
         Assertions.assertTrue(userService.addOrUpdateUser(user));
