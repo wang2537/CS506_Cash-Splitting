@@ -230,7 +230,7 @@ public class UserDAOImpl implements UserDAO {
             return false;
         }
         if (originApp.getStatus().equals("pending")) {
-            originApp.setStatus(friendApp.getStatus());
+           originApp.setStatus(friendApp.getStatus());
             if (originApp.getStatus().equals("denied")) {
                 return "denied friend";
             }
@@ -240,18 +240,16 @@ public class UserDAOImpl implements UserDAO {
                         addEntity(Friend.class);
                 query.setParameter("uid", friendApp.getSource());
                 query.setParameter("friend_id", friendApp.getDestination());
-                List<Friend> friendList = new ArrayList<>();
                 List list = query.list();
+                Friend newFriend = new Friend(originApp.getDestination(), originApp.getSource());
+                Friend newFriend2 = new Friend(originApp.getSource(), originApp.getDestination());
                 if (list.isEmpty()) {
-                    Friend newFriend = new Friend(originApp.getDestination(), originApp.getSource());
                     currSession.saveOrUpdate(newFriend);
+                    currSession.saveOrUpdate(newFriend2);
                     return true;
                 } else {
-                    for (Object o : list){
-                        Friend friend = (Friend) o;
-                        friendList.add(friend);
-                    }
-                    updateFriend(friendList.get(0));
+                    newFriend.setStatus("valid");
+                    return updateFriend(newFriend);
                 }
             }
             currSession.saveOrUpdate(originApp);
@@ -274,15 +272,31 @@ public class UserDAOImpl implements UserDAO {
             friendList.add(tmp);
         }
         Friend originFriend = friendList.get(0);
+        SQLQuery _query = currSession.
+                createSQLQuery("select * from frienddb where friend_id = :friend_id and uid = :uid").
+                addEntity(Friend.class);
+        _query.setParameter("uid", friend.getFriend_id());
+        _query.setParameter("friend_id", friend.getUid());
+        List<Friend> _friendList = new ArrayList<>();
+        List _list = _query.list();
+        for (Object o : _list){
+            Friend tmp = (Friend) o;
+            _friendList.add(tmp);
+        }
+        Friend _originFriend = _friendList.get(0);
         if (friend.getStatus().equals("invalid") && originFriend.getStatus().equals("valid")) {
             originFriend.setStatus(friend.getStatus()); // delete friend
+            _originFriend.setStatus(friend.getStatus());
             currSession.saveOrUpdate(originFriend);
+            currSession.saveOrUpdate(_originFriend);
             return "successfully delete friend";
         }
         if (friend.getStatus().equals("valid") && originFriend.getStatus().equals("invalid")) {
             originFriend.setStatus(friend.getStatus()); // refriend
+            _originFriend.setStatus(friend.getStatus());
             currSession.saveOrUpdate(originFriend);
-            return "successfully odd old friend";
+            currSession.saveOrUpdate(_originFriend);
+            return "successfully add old friend";
         }
         return "nothing changed";
     }

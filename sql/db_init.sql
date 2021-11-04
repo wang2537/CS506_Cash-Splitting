@@ -43,7 +43,7 @@ CREATE TABLE frienddb
 (
     friend_id       INT NOT NULL,
     uid             INT NOT NULL,
-    status          ENUM('valid', 'invalid'),
+    status          ENUM('valid', 'invalid') NOT NULL DEFAULT 'valid',
 
     PRIMARY KEY (uid, friend_id),
     FOREIGN KEY (uid)
@@ -125,5 +125,62 @@ VALUES ('Insipid', 'xulin', 'yang');
 INSERT INTO userdb(username, firstname, lastname)
 VALUES ('Zhijiang', 'zihan', 'zhu');
 
-INSERT INTO passworddb(uid, pid, password)
-VALUES (1, 1, '123456');
+INSERT INTO passworddb(uid, password)
+VALUES (1, '123456');
+
+INSERT INTO passworddb(uid, password)
+VALUES (2, '123456');
+
+INSERT INTO passworddb(uid, password)
+VALUES (3, '123456');
+
+INSERT INTO passworddb(uid, password)
+VALUES (4, '123456');
+
+INSERT INTO passworddb(uid, password)
+VALUES (5, '123456');
+
+INSERT INTO passworddb(uid, password)
+VALUES (6, '123456');
+
+INSERT INTO passworddb(uid, password)
+VALUES (7, '123456');
+
+INSERT INTO passworddb(uid, password)
+VALUES (8, '123456');
+
+INSERT INTO friend_appdb(source, destination)
+VALUES (2, 3);
+
+INSERT INTO friend_appdb(source, destination)
+VALUES (2, 4);
+
+INSERT INTO friend_appdb(source, destination)
+VALUES (2, 5);
+
+INSERT INTO friend_appdb(source, destination)
+VALUES (5, 2);
+
+INSERT INTO friend_appdb(source, destination)
+VALUES (3, 5);
+
+INSERT INTO friend_appdb(source, destination)
+VALUES (4, 6);
+
+INSERT INTO frienddb(friend_id, uid, status)
+VALUES (4, 6, 'invalid');
+
+INSERT INTO frienddb(friend_id, uid, status)
+VALUES (6, 4, 'invalid');
+
+INSERT INTO frienddb(friend_id, uid)
+VALUES (4, 7);
+
+INSERT INTO frienddb(friend_id, uid)
+VALUES (7, 4);
+
+INSERT INTO frienddb(friend_id, uid)
+VALUES (4, 8);
+
+INSERT INTO frienddb(friend_id, uid)
+VALUES (8, 4);
