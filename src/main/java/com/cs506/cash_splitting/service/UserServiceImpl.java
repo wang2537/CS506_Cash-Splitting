@@ -68,6 +68,10 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
+    public Object getGroupname(int uid){ return userdao.getGroupname(uid);}
+
+    @Transactional
+    @Override
     public boolean sendFriendRequest(FriendApp friendApp) {
         return userdao.sendFriendRequest(friendApp);
     }

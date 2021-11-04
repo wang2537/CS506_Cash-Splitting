@@ -15,6 +15,7 @@ public interface UserService {
     boolean addMember(int gid, int uid);
     boolean quitGroup(int gid, int uid);
     boolean changeGroupname(int gid, String newGroupName);
+    Object getGroupname(int uid);
 
     boolean sendFriendRequest(FriendApp friendApp);
     Object getFriendRequest(int uid);
