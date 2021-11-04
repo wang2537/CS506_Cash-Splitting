@@ -4,16 +4,11 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -100,6 +95,17 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean createGroup(Group group){
         Session currSession = entityManager.unwrap(Session.class);
+        int max_gid;
+        org.hibernate.Query query_max = currSession.createSQLQuery("select max(gid) from groupdb ");
+        List max = query_max.list();
+        if (max == null || max.get(0) == null){
+            max_gid = 1;
+        }
+        else{
+            max_gid = (int) max.get(0) + 1;
+        }
+        group.setGid(max_gid);
+
         //sanity check
         org.hibernate.Query query = currSession.createSQLQuery("select distinct gid from groupdb " +
                 "where status = 'valid'");
@@ -186,6 +192,22 @@ public class UserDAOImpl implements UserDAO {
            group.setGroupname(newGroupName);
         }
         return true;
+    }
+
+    @Override
+    @ResponseBody
+    public Object getGroupname(int uid){
+        Session currSession = entityManager.unwrap(Session.class);
+        SQLQuery query = currSession.
+                createSQLQuery("select * from groupdb where uid = :uid").addEntity(Group.class);
+        query.setParameter("uid", uid);
+        List list = query.list();
+        List<Group> groupList = new ArrayList<>();
+        for (Object o : list){
+            Group gp = (Group) o;
+            groupList.add(gp);
+        }
+        return groupList;
     }
 
     @Override
