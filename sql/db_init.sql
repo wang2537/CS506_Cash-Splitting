@@ -124,3 +124,6 @@ VALUES ('Insipid', 'xulin', 'yang');
 
 INSERT INTO userdb(username, firstname, lastname)
 VALUES ('Zhijiang', 'zihan', 'zhu');
+
+INSERT INTO passworddb(uid, pid, password)
+VALUES (1, 1, '123456');
