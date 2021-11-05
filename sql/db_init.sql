@@ -167,9 +167,6 @@ VALUES (5, 2);
 INSERT INTO friend_appdb(source, destination)
 VALUES (3, 5);
 
-INSERT INTO friend_appdb(source, destination)
-VALUES (4, 6);
-
 INSERT INTO frienddb(friend_id, uid, status)
 VALUES (4, 6, 'invalid');
 

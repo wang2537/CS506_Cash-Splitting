@@ -277,7 +277,7 @@ public class UserDAOImpl implements UserDAO {
            currSession.saveOrUpdate(originApp);
             if (originApp.getStatus().equals("denied")) {
                 SQLQuery friendApp_query = currSession.
-                        createSQLQuery("select * from frienddb where friend_id = :source and uid = :destination and status = 'pending'").
+                        createSQLQuery("select * from friend_appdb where source = :destination and destination = :source and status = 'pending'").
                         addEntity(FriendApp.class);
                 friendApp_query.setParameter("source", friendApp.getSource());
                 friendApp_query.setParameter("destination", friendApp.getDestination());
@@ -291,7 +291,7 @@ public class UserDAOImpl implements UserDAO {
             }
             if (originApp.getStatus().equals("approved")) {
                 SQLQuery friendApp_query = currSession.
-                        createSQLQuery("select * from frienddb where friend_id = :source and uid = :destination and status = 'pending'").
+                        createSQLQuery("select * from friend_appdb where source = :destination and destination = :source and status = 'pending'").
                         addEntity(FriendApp.class);
                 friendApp_query.setParameter("source", friendApp.getSource());
                 friendApp_query.setParameter("destination", friendApp.getDestination());
