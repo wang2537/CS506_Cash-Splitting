@@ -28,6 +28,11 @@ public class UserController {
         return userService.getUid(username);
     }
 
+    @GetMapping("/username/{uid}")
+    public String add(@PathVariable int uid) {
+        return userService.getUserName(uid);
+    }
+
     @PostMapping("/signup/password")
     public boolean add(@RequestBody Password password) {
         return userService.addOrUpdatePassword(password);
