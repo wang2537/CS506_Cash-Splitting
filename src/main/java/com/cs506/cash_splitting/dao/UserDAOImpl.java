@@ -224,15 +224,25 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean sendFriendRequest(FriendApp friendApp) {
         Session currSession = entityManager.unwrap(Session.class);
-        SQLQuery query = currSession.
-                createSQLQuery("select * from friend_appdb where source = :source and destination = :destination").
+        SQLQuery friend_query = currSession.
+                createSQLQuery("select * from frienddb where friend_id = :source and uid = :destination and status = 'pending'").
                 addEntity(FriendApp.class);
-        query.setParameter("source", friendApp.getSource());
-        query.setParameter("destination", friendApp.getDestination());
-        List friend_app_list = query.list();
-        if (friend_app_list.isEmpty()) {
-            currSession.saveOrUpdate(friendApp);
-            return true;
+        friend_query.setParameter("source", friendApp.getSource());
+        friend_query.setParameter("destination", friendApp.getDestination());
+        List friend_list = friend_query.list();
+        if (friend_list.isEmpty()) {
+            SQLQuery query = currSession.
+                    createSQLQuery("select * from friend_appdb where source = :source and destination = :destination and status = 'pending'").
+                    addEntity(FriendApp.class);
+            query.setParameter("source", friendApp.getSource());
+            query.setParameter("destination", friendApp.getDestination());
+            List friend_app_list = query.list();
+            if (friend_app_list.isEmpty()) {
+                currSession.saveOrUpdate(friendApp);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -264,10 +274,33 @@ public class UserDAOImpl implements UserDAO {
         }
         if (originApp.getStatus().equals("pending")) {
            originApp.setStatus(friendApp.getStatus());
+           currSession.saveOrUpdate(originApp);
             if (originApp.getStatus().equals("denied")) {
+                SQLQuery friendApp_query = currSession.
+                        createSQLQuery("select * from frienddb where friend_id = :source and uid = :destination and status = 'pending'").
+                        addEntity(FriendApp.class);
+                friendApp_query.setParameter("source", friendApp.getSource());
+                friendApp_query.setParameter("destination", friendApp.getDestination());
+                List friendApp_list = friendApp_query.list();
+                if (!friendApp_list.isEmpty()) {
+                    FriendApp friend_application = (FriendApp) friendApp_list.get(0);
+                    friend_application.setStatus("denied");
+                    currSession.saveOrUpdate(friend_application);
+                }
                 return "denied friend";
             }
             if (originApp.getStatus().equals("approved")) {
+                SQLQuery friendApp_query = currSession.
+                        createSQLQuery("select * from frienddb where friend_id = :source and uid = :destination and status = 'pending'").
+                        addEntity(FriendApp.class);
+                friendApp_query.setParameter("source", friendApp.getSource());
+                friendApp_query.setParameter("destination", friendApp.getDestination());
+                List friendApp_list = friendApp_query.list();
+                if (!friendApp_list.isEmpty()) {
+                    FriendApp friend_application = (FriendApp) friendApp_list.get(0);
+                    friend_application.setStatus("approved");
+                    currSession.saveOrUpdate(friend_application);
+                }
                 SQLQuery query = currSession.
                         createSQLQuery("select * from frienddb where friend_id = :friend_id and uid = :uid").
                         addEntity(Friend.class);
@@ -285,7 +318,7 @@ public class UserDAOImpl implements UserDAO {
                     return updateFriend(newFriend);
                 }
             }
-            currSession.saveOrUpdate(originApp);
+            return true;
         }
         return false;
     }
