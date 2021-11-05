@@ -50,11 +50,22 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean addOrUpdatePassword(Password password) {
         Password record = new Password();
-        int hash_password = password.getPassword().hashCode();
-        record.setPassword(String.valueOf(hash_password));
-        record.setUid(password.getUid());
         Session currSession = entityManager.unwrap(Session.class);
+        int encrypt_password= password.getPassword().hashCode();
+        String hash_password = String.valueOf(encrypt_password);
+        Query query = currSession.createSQLQuery("select pid from passworddb where uid = :userid ");
+        query.setParameter("userid", password.getUid());
+        if (query.getResultList().isEmpty()){
+            record.setPassword(hash_password);
+            record.setUid(password.getUid());
+        }else{
+            int pid = (int) query.getResultList().get(0);
+            record.setPassword(hash_password);
+            record.setUid(password.getUid());
+            record.setPid(pid);
+        }
         currSession.saveOrUpdate(record);
+
         return true;
     }
 
