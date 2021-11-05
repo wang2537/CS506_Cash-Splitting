@@ -197,6 +197,9 @@ VALUES (8, 4, 'approved');
 INSERT INTO friend_appdb(source, destination, status)
 VALUES (4, 7, 'approved');
 
+INSERT INTO friend_appdb(source, destination, status)
+VALUES (4, 6, 'pending');
+
 
 
 

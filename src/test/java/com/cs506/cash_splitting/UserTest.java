@@ -113,7 +113,7 @@ public class UserTest extends CashApplicationTests{
         Assertions.assertEquals(userService.updateFriendApp(friendApp), true);
         Assertions.assertEquals(userService.updateFriendApp(friendApp), false);
         FriendApp friendApp2 = new FriendApp();
-        friendApp2.setAid(6);
+        friendApp2.setAid(11);
         friendApp2.setSource(4);
         friendApp2.setDestination(6);
         friendApp2.setStatus("approved");
