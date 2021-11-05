@@ -126,28 +126,28 @@ INSERT INTO userdb(username, firstname, lastname)
 VALUES ('Zhijiang', 'zihan', 'zhu');
 
 INSERT INTO passworddb(uid, password)
-VALUES (1, '123456');
+VALUES (1, '1450575459');
 
 INSERT INTO passworddb(uid, password)
-VALUES (2, '123456');
+VALUES (2, '1450575459');
 
 INSERT INTO passworddb(uid, password)
-VALUES (3, '123456');
+VALUES (3, '1450575459');
 
 INSERT INTO passworddb(uid, password)
-VALUES (4, '123456');
+VALUES (4, '1450575459');
 
 INSERT INTO passworddb(uid, password)
-VALUES (5, '123456');
+VALUES (5, '1450575459');
 
 INSERT INTO passworddb(uid, password)
-VALUES (6, '123456');
+VALUES (6, '1450575459');
 
 INSERT INTO passworddb(uid, password)
-VALUES (7, '123456');
+VALUES (7, '1450575459');
 
 INSERT INTO passworddb(uid, password)
-VALUES (8, '123456');
+VALUES (8, '1450575459');
 
 INSERT INTO friend_appdb(source, destination)
 VALUES (2, 3);

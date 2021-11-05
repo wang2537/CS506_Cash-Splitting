@@ -3,7 +3,6 @@ package com.cs506.cash_splitting;
 import com.cs506.cash_splitting.dao.*;
 import com.cs506.cash_splitting.model.*;
 import com.cs506.cash_splitting.service.*;
-import org.hibernate.Session;
 import org.junit.jupiter.api.Assertions;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class UserTest extends CashApplicationTests{
     @Transactional
     public void testLogin(){
         String username = "yuegu";
-        String password = "123456";
+        String password = "1450575459";
         Assertions.assertTrue(userService.login(username, password));
     }
 
@@ -67,12 +66,10 @@ public class UserTest extends CashApplicationTests{
         int uid = userService.getUid(user.getUsername());
         Assertions.assertEquals(userService.getUserName(uid), user.getUsername());
         Password password = new Password();
-        password.setPassword("password");
+        password.setPassword("1450575459");
         password.setUid(uid);
         Assertions.assertTrue(userService.addOrUpdatePassword(password));
-//        System.out.println(user.getUsername());
-//        System.out.println(password.getPassword());
-//        System.out.println(userService.login("test_username", "password"));
+        Assertions.assertTrue(userService.login("test_username", "123456"));
     }
 
     @Test
