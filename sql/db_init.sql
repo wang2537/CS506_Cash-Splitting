@@ -156,6 +156,9 @@ INSERT INTO friend_appdb(source, destination)
 VALUES (2, 4);
 
 INSERT INTO friend_appdb(source, destination)
+VALUES (4, 2);
+
+INSERT INTO friend_appdb(source, destination)
 VALUES (2, 5);
 
 INSERT INTO friend_appdb(source, destination)
@@ -184,3 +187,19 @@ VALUES (4, 8);
 
 INSERT INTO frienddb(friend_id, uid)
 VALUES (8, 4);
+
+INSERT INTO friend_appdb(source, destination, status)
+VALUES (6, 4, 'approved');
+
+INSERT INTO friend_appdb(source, destination, status)
+VALUES (7, 4, 'approved');
+
+INSERT INTO friend_appdb(source, destination, status)
+VALUES (8, 4, 'approved');
+
+INSERT INTO friend_appdb(source, destination, status)
+VALUES (4, 7, 'approved');
+
+
+
+
