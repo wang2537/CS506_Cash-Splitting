@@ -229,7 +229,7 @@ public class UserDAOImpl implements UserDAO {
         Session currSession = entityManager.unwrap(Session.class);
         SQLQuery friend_query = currSession.
                 createSQLQuery("select * from frienddb where friend_id = :source and uid = :destination and status = 'valid'").
-                addEntity(FriendApp.class);
+                addEntity(Friend.class);
         friend_query.setParameter("source", friendApp.getSource());
         friend_query.setParameter("destination", friendApp.getDestination());
         List friend_list = friend_query.list();
