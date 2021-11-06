@@ -117,19 +117,19 @@ public class UserTest extends CashApplicationTests{
         friendApp2.setSource(4);
         friendApp2.setDestination(6);
         friendApp2.setStatus("approved");
-        Assertions.assertEquals(userService.updateFriendApp(friendApp2), "successfully add old friend");
+        Assertions.assertEquals(userService.updateFriendApp(friendApp2), true);
     }
 
     @Test
     @Transactional
     public void testUpdateFriend() {
         Friend friend = new Friend(6, 4);
-        Assertions.assertEquals(userService.updateFriend(friend), "successfully add old friend");
+        Assertions.assertEquals(userService.updateFriend(friend), 2);
         Friend friend1 = new Friend(7, 4);
         friend1.setStatus("invalid");
-        Assertions.assertEquals(userService.updateFriend(friend1), "successfully delete friend");
+        Assertions.assertEquals(userService.updateFriend(friend1), 1);
         Friend friend2 = new Friend(4, 6);
-        Assertions.assertEquals(userService.updateFriend(friend2), "nothing changed");
+        Assertions.assertEquals(userService.updateFriend(friend2), 3);
 
     }
 
