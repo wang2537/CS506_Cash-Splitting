@@ -16,7 +16,7 @@ userdb and hivedb are created with 2 dummy entries for testing;
 
 ### intellij (or terminal for those who are too bold)
 3. Link database to this project: modify CS506_Cash-Splitting/src/main/resources/application.properties [if needed]
-4. Link database to intellij: intellij->View->Tool Window->Database: click "+" to add MySQL database (e.g.:database=localhost:3306/spiketester)
+4. Link database to intellij: intellij->View->Tool Window->Database: click "+" to add MySQL database (e.g.:database=localhost:3306/cash_splittingtester)
 
 PS: default_port=3306, db_name_initialized_with_db_init.sql=cash_splittingTester
 
@@ -27,7 +27,7 @@ PS: default_port=3306, db_name_initialized_with_db_init.sql=cash_splittingTester
 3. Add database with user=root, password=12345678 (or whatever, but change setting in application.properties if use other password)
 ### Intellij
 4. Link database to this project: modify CS506_Cash-Splitting/src/main/resources/application.properties [if needed]
-5. Link database to intellij: intellij->View->Tool Window->Database: click "+" to add MySQL database (e.g.:database=localhost:3306/spiketester)
+5. Link database to intellij: intellij->View->Tool Window->Database: click "+" to add MySQL database (e.g.:database=localhost:3306/cash_splittingtester)
 6. run CS506_Cash-Splitting/sql/db_init.sql from intellij on selected the database just added (e.g. localhost:3306...)
 
 PS: default_port=3306, db_name_initialized_with_db_init.sql=cash_splittingTester
@@ -37,7 +37,7 @@ PS: default_port=3306, db_name_initialized_with_db_init.sql=cash_splittingTester
 # Run
 ## All systems
 ### backend-only
-In intellij, navigate to CS506_Cash-Splitting/src/main/java/com/spike/spike/SpikeApplication, hit run (shift + F10);
+In intellij, navigate to CS506_Cash-Splitting/src/main/java/com.cs506.cash_splitting/service/CashApplication, hit run (shift + F10);
 If no error message in console, application is running;
 Access backend by opening 'localhost:<port_number>/api/hive' or 'localhost:<port_number>/api/user' in a browser
 
