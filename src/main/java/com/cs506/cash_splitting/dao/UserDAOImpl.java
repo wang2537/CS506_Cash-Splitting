@@ -380,7 +380,7 @@ public class UserDAOImpl implements UserDAO {
             _originFriend.setStatus(friend.getStatus());
             currSession.saveOrUpdate(originFriend);
             currSession.saveOrUpdate(_originFriend);
-            return 2;
+            return 1;
         }
         return 3;
     }
