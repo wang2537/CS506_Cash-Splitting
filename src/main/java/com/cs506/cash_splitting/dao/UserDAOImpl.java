@@ -333,7 +333,7 @@ public class UserDAOImpl implements UserDAO {
                     return true;
                 } else {
                     newFriend.setStatus("valid");
-                    return updateFriend(newFriend);
+                    updateFriend(newFriend);
                 }
             }
             return true;
