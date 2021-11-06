@@ -4,7 +4,7 @@ Spring+MySQL backend
 
 ## Linux:
 ### terminal
-1. install mysql
+1. install mysql;
 2. [FOR NOW] use script in CS506_Cash-Splitting/sql/db_init.sql to initialize user, db, and tables:
     SOURCE .../sql/db_init.sql;
 
