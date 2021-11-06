@@ -5,10 +5,13 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+
+
+import javax.persistence.Query;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -256,11 +259,14 @@ public class UserDAOImpl implements UserDAO {
                 createSQLQuery("select * from friend_appdb where source = :source and status = 'pending'").
                 addEntity(FriendApp.class);
         query_out.setParameter("source", uid);
-        List<FriendApp> friendAppList = new ArrayList<>();
+        List<FriendAppWithName> friendAppList = new ArrayList<>();
         List list = query_out.list();
         for (Object o : list){
             FriendApp friendApp = (FriendApp) o;
-            friendAppList.add(friendApp);
+            FriendAppWithName friendApp_with_name = new FriendAppWithName(friendApp);
+            friendApp_with_name.setDestinationName(getUserName(friendApp.getDestination()));
+            friendApp_with_name.setSourceName(getUserName(friendApp.getSource()));
+            friendAppList.add(friendApp_with_name);
         }
         SQLQuery query_in = currSession.
                 createSQLQuery("select * from friend_appdb where destination = :source and status = 'pending'").
@@ -269,7 +275,10 @@ public class UserDAOImpl implements UserDAO {
         List list2 = query_in.list();
         for (Object o : list2){
             FriendApp friendApp = (FriendApp) o;
-            friendAppList.add(friendApp);
+            FriendAppWithName friendApp_with_name = new FriendAppWithName(friendApp);
+            friendApp_with_name.setDestinationName(getUserName(friendApp.getDestination()));
+            friendApp_with_name.setSourceName(getUserName(friendApp.getSource()));
+            friendAppList.add(friendApp_with_name);
         }
         return friendAppList;
     }
@@ -296,7 +305,7 @@ public class UserDAOImpl implements UserDAO {
                     friend_application.setStatus("denied");
                     currSession.saveOrUpdate(friend_application);
                 }
-                return "denied friend";
+                return true;
             }
             if (originApp.getStatus().equals("approved")) {
                 SQLQuery friendApp_query = currSession.
