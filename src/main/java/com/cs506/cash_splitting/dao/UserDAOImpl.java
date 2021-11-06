@@ -373,16 +373,16 @@ public class UserDAOImpl implements UserDAO {
             _originFriend.setStatus(friend.getStatus());
             currSession.saveOrUpdate(originFriend);
             currSession.saveOrUpdate(_originFriend);
-            return "successfully delete friend";
+            return 1;
         }
         if (friend.getStatus().equals("valid") && originFriend.getStatus().equals("invalid")) {
             originFriend.setStatus(friend.getStatus()); // refriend
             _originFriend.setStatus(friend.getStatus());
             currSession.saveOrUpdate(originFriend);
             currSession.saveOrUpdate(_originFriend);
-            return "successfully add old friend";
+            return 2;
         }
-        return "nothing changed";
+        return 3;
     }
 
     @Override
@@ -390,7 +390,7 @@ public class UserDAOImpl implements UserDAO {
     public Object getFriend(int uid) {
         Session currSession = entityManager.unwrap(Session.class);
         SQLQuery query = currSession.
-                createSQLQuery("select friend_id from frienddb where uid = :uid");
+                createSQLQuery("select friend_id from frienddb where uid = :uid and status = 'valid'");
         query.setParameter("uid", uid);
         List list = query.list();
         List<User> friendList = new ArrayList<>();
