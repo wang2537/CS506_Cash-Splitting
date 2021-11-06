@@ -252,13 +252,22 @@ public class UserDAOImpl implements UserDAO {
     @ResponseBody
     public Object getFriendRequest(int uid) {
         Session currSession = entityManager.unwrap(Session.class);
-        SQLQuery query = currSession.
+        SQLQuery query_out = currSession.
                 createSQLQuery("select * from friend_appdb where source = :source and status = 'pending'").
                 addEntity(FriendApp.class);
-        query.setParameter("source", uid);
+        query_out.setParameter("source", uid);
         List<FriendApp> friendAppList = new ArrayList<>();
-        List list = query.list();
+        List list = query_out.list();
         for (Object o : list){
+            FriendApp friendApp = (FriendApp) o;
+            friendAppList.add(friendApp);
+        }
+        SQLQuery query_in = currSession.
+                createSQLQuery("select * from friend_appdb where destination = :source and status = 'pending'").
+                addEntity(FriendApp.class);
+        query_in.setParameter("source", uid);
+        List list2 = query_in.list();
+        for (Object o : list2){
             FriendApp friendApp = (FriendApp) o;
             friendAppList.add(friendApp);
         }
