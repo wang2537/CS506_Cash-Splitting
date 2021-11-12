@@ -200,6 +200,12 @@ VALUES (4, 7, 'approved');
 INSERT INTO friend_appdb(source, destination, status)
 VALUES (4, 6, 'pending');
 
+INSERT INTO groupdb(gid, uid, groupname)
+VALUES (1, 1, 'yuegu-group');
+
+INSERT INTO groupdb(gid, uid, groupname, status)
+VALUES (1, 2, 'yuegu-group', 'invalid');
+
 
 
 

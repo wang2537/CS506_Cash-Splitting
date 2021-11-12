@@ -30,6 +30,7 @@ public class UserTest extends CashApplicationTests{
         user.setUsername("test_username");
         return user;
     }
+
     @Test
     @Transactional
     public void testGetUserNameById(){
@@ -133,4 +134,57 @@ public class UserTest extends CashApplicationTests{
 
     }
 
+    @Test
+    @Transactional
+    public void testCreateGroup(){
+        Group group1 = new Group(2,1, "yueyu-group");
+        Assertions.assertTrue(userService.createGroup(group1));
+        Assertions.assertEquals(group1.getGid(), 2);
+
+        // pass an existing gid, it will be ignored and automatically use a new gid
+        Group group2 = new Group(1,1, "non-user-group");
+        Assertions.assertTrue(userService.createGroup(group2));
+        Assertions.assertEquals(group2.getGid(), 3);
+    }
+
+    @Test
+    @Transactional
+    public void testAddMember(){
+        // user already in the group
+        Assertions.assertFalse(userService.addMember(1,1));
+        // user not in the group
+        Assertions.assertTrue(userService.addMember(1,3));
+        // no group with this gid
+        Assertions.assertFalse(userService.addMember(5,1));
+        // user used to be in the group
+        Assertions.assertTrue(userService.addMember(1,2));
+    }
+
+    @Test
+    @Transactional
+    public void testQuitGroup(){
+        // user not in the group
+        Assertions.assertFalse(userService.quitGroup(1, 2));
+        Assertions.assertFalse(userService.quitGroup(1, 3));
+        //user in the group
+        Assertions.assertTrue(userService.quitGroup(1, 1));
+    }
+
+    @Test
+    @Transactional
+    public void testChangeGroupName(){
+        // group not exist
+        Assertions.assertFalse(userService.changeGroupname(6, "newName"));
+        // group exist
+        Assertions.assertTrue(userService.changeGroupname(1, "newName"));
+    }
+
+    @Test
+    @Transactional
+    public void testGetGroupName(){
+        Group obj = (Group) ((ArrayList) userService.getGroupname(1)).get(0);
+        String groupname = obj.getGroupname();
+        System.out.println(groupname);
+        Assertions.assertEquals(groupname, "yuegu-group");
+    }
 }

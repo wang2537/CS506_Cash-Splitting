@@ -25,6 +25,16 @@ public class Group {
     @Column
     private String status = "valid";
 
+    public Group(){
+    }
+
+    public Group(int gid, int uid, String groupname) {
+        this.gid = gid;
+        this.uid = uid;
+        this.groupname = groupname;
+        this.status = "valid";
+    }
+
     public static String getStringToday() {
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
