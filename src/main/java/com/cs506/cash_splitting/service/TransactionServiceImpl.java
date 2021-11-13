@@ -34,4 +34,10 @@ public class TransactionServiceImpl implements TransactionService{
     public Object getTransaction(int uid) {
         return transactionDAO.getTransaction(uid);
     }
+
+    @Transactional
+    @Override
+    public Object updateOneTransaction(int tid) {
+        return transactionDAO.updateOneTransaction(tid);
+    }
 }

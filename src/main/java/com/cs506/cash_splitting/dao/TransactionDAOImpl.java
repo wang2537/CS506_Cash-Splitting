@@ -1,10 +1,6 @@
 package com.cs506.cash_splitting.dao;
 
-import com.cs506.cash_splitting.model.FriendApp;
-import com.cs506.cash_splitting.model.Group;
 import com.cs506.cash_splitting.model.Transaction;
-import com.cs506.cash_splitting.model.User;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,9 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class TransactionDAOImpl implements TransactionDAO{
@@ -25,36 +19,43 @@ public class TransactionDAOImpl implements TransactionDAO{
     @Override
     public Object getTotalBalance(int uid) {
         Session currSession = entityManager.unwrap(Session.class);
-        Query query = currSession.createSQLQuery("select total_balance from userdb where uid = :userid ");
+        Query query = currSession.createSQLQuery("with m1 as (select currency, SUM(amount) as total from transactiondb where source = :userid and status = :sta" +
+                " group by currency), m2 as (select currency, 0-SUM(amount) as total from transactiondb where destination = :userid and status = :sta group by currency)," +
+                "m3 as (select currency, total from m2 where currency not in (select distinct currency from m1)), m4 as (select currency, total from m1 where currency" +
+                " not in (select distinct currency from m2) group by currency) select m1.currency, m1.total+m2.total as total from m1, m2 where m1.currency = m2.currency " +
+                "UNION select * from m3 UNION select * from m4 ");
         query.setParameter("userid", uid);
-        return query.getResultList().get(0);
+        query.setParameter("sta", "unpaid");
+        return query.getResultList();
     }
 
     @Override
     public Object createTransaction(Transaction transaction) {
         Session currSession = entityManager.unwrap(Session.class);
         currSession.saveOrUpdate(transaction);
-        int source_id = transaction.getSource();
-        int destination_id = transaction.getDestination();
-        double amount = transaction.getAmount();
-        //set source
-        User source = currSession.get(User.class, source_id);
-        double lent = source.getLent();
-        double src_balance = source.getTotal_balance();
-        BigDecimal bg3 = new BigDecimal(amount+lent);
-        source.setLent(bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-        BigDecimal bg = new BigDecimal(src_balance-amount);
-        source.setTotal_balance(bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-        //set destination
-        User destination = currSession.get(User.class, destination_id);
-        double borrow = destination.getBorrowed();
-        double des_balance = destination.getTotal_balance();
-        BigDecimal bg4 = new BigDecimal(borrow+amount);
-        destination.setBorrowed(bg4.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-        BigDecimal bg2 = new BigDecimal(des_balance+amount);
-        destination.setTotal_balance(bg2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-        currSession.saveOrUpdate(source);
-        currSession.saveOrUpdate(destination);
+//        if (transaction.getCurrency().equals("USD")){
+//        int source_id = transaction.getSource();
+//        int destination_id = transaction.getDestination();
+//        double amount = transaction.getAmount();
+//        //set source
+//        User source = currSession.get(User.class, source_id);
+//        double lent = source.getLent();
+//        double src_balance = source.getTotal_balance();
+//        BigDecimal bg3 = new BigDecimal(amount+lent);
+//        source.setLent(bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+//        BigDecimal bg = new BigDecimal(src_balance-amount);
+//        source.setTotal_balance(bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+//        //set destination
+//        User destination = currSession.get(User.class, destination_id);
+//        double borrow = destination.getBorrowed();
+//        double des_balance = destination.getTotal_balance();
+//        BigDecimal bg4 = new BigDecimal(borrow+amount);
+//        destination.setBorrowed(bg4.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+//        BigDecimal bg2 = new BigDecimal(des_balance+amount);
+//        destination.setTotal_balance(bg2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+//        currSession.saveOrUpdate(source);
+//        currSession.saveOrUpdate(destination);
+//        }
         return true;
     }
 
@@ -88,7 +89,7 @@ public class TransactionDAOImpl implements TransactionDAO{
     @Override
     public Object getTransaction(int uid) {
         Session currSession = entityManager.unwrap(Session.class);
-        Query query = currSession.createSQLQuery("select * from transactiondb where source = :user or destination = :user").addEntity(Transaction.class);
+        Query query = currSession.createSQLQuery("select * from transactiondb where source = :user or destination = :user order by create_time ASC ").addEntity(Transaction.class);
         query.setParameter("user", uid);
         List list = query.getResultList();
         List<Transaction> transactionList = new ArrayList<>();
@@ -97,5 +98,17 @@ public class TransactionDAOImpl implements TransactionDAO{
             transactionList.add(t);
         }
         return transactionList;
+    }
+
+    @Override
+    public Object updateOneTransaction(int tid) {
+        Session currSession = entityManager.unwrap(Session.class);
+        Query query = currSession.createSQLQuery("select * from transactiondb where tid = :tid").addEntity(Transaction.class);
+        query.setParameter("tid", tid);
+        Transaction transaction = (Transaction) query.getResultList().get(0);
+        transaction.setStatus("paid");
+        currSession.saveOrUpdate(transaction);
+        return true;
+
     }
 }
