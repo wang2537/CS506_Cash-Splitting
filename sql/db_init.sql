@@ -206,6 +206,9 @@ VALUES (1, 1, 'yuegu-group');
 INSERT INTO groupdb(gid, uid, groupname, status)
 VALUES (1, 2, 'yuegu-group', 'invalid');
 
+INSERT INTO groupdb(gid, uid, groupname, status)
+VALUES (-1, 1, 'yuegu-group', 'invalid');
+
 
 
 
