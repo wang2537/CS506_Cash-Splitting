@@ -5,12 +5,14 @@ import com.cs506.cash_splitting.model.GroupChat;
 import com.cs506.cash_splitting.model.User;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.EntityManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

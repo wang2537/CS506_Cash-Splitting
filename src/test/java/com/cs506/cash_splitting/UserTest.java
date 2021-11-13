@@ -7,10 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,12 +122,12 @@ public class UserTest extends CashApplicationTests{
     @Transactional
     public void testUpdateFriend() {
         Friend friend = new Friend(6, 4);
-        Assertions.assertEquals(userService.updateFriend(friend), 2);
+        Assertions.assertEquals(userService.updateFriend(friend), "succeed in adding old friend phyTA");
         Friend friend1 = new Friend(7, 4);
         friend1.setStatus("invalid");
-        Assertions.assertEquals(userService.updateFriend(friend1), 1);
+        Assertions.assertEquals(userService.updateFriend(friend1), "Succeed in deleting Insipid");
         Friend friend2 = new Friend(4, 6);
-        Assertions.assertEquals(userService.updateFriend(friend2), 3);
+        Assertions.assertEquals(userService.updateFriend(friend2), "error, nothing changed");
 
     }
 

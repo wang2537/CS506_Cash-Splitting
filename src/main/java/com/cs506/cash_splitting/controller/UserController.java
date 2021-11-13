@@ -107,7 +107,10 @@ public class UserController {
 
     @PostMapping("/friend/update")
     public Object updateFriend(@RequestBody Friend friend) {
-        return userService.updateFriend(friend);
+        HashMap<Object,Object> result = new HashMap<>();
+        String value = (String) userService.updateFriend(friend);
+        result.put("result", value);
+        return result;
     }
 
 
