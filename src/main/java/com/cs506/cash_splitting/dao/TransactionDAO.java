@@ -8,4 +8,5 @@ public interface TransactionDAO {
     Object getBalance(int source_id, int destination_id);
     double double_two(double number);
     Object getTransaction(int uid);
+    Object updateOneTransaction(int tid);
 }

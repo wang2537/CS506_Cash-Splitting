@@ -35,10 +35,13 @@ public class TransactionController {
         return transactionService.getBalance(map.get("source"), map.get("destination"));
     }
 
-    @GetMapping("/transaction/{uid}")
+    @GetMapping("/transaction/user/{uid}")
     public Object get_transaction(@PathVariable int uid) {
         return transactionService.getTransaction(uid);
     }
 
-
+    @GetMapping("/transaction/{tid}")
+    public Object update_one_transaction(@PathVariable int tid) {
+        return transactionService.updateOneTransaction(tid);
+    }
 }

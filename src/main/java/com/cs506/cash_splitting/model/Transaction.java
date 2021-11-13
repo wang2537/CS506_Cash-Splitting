@@ -35,6 +35,9 @@ public class Transaction {
     @Column
     private int gid = -1;
 
+    @Column
+    private String create_time = "";
+
     public int getSource() {
         return source;
     }
@@ -97,5 +100,13 @@ public class Transaction {
 
     public void setTid(int tid) {
         this.tid = tid;
+    }
+
+    public String getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
     }
 }

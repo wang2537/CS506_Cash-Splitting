@@ -7,5 +7,6 @@ public interface TransactionService {
     Object createTransaction(Transaction transaction);
     Object getBalance(int src_id, int des_id);
     Object getTransaction(int uid);
+    Object updateOneTransaction(int tid);
 
 }
