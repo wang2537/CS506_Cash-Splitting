@@ -18,4 +18,15 @@ public class ChatServiceImpl implements ChatService{
         return chatdao.sendGroupMessage(groupChat);
     }
 
+    @Transactional
+    @Override
+    public boolean sendFriendMessage(FriendChat friendChat) {
+        return chatdao.sendFriendMessage(friendChat);
+    }
+
+    @Override
+    public Object getFriendMessages(int uid, int friendId) {
+        return chatdao.getFriendMessages(uid, friendId);
+    }
+
 }

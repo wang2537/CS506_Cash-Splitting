@@ -5,4 +5,6 @@ import com.cs506.cash_splitting.model.*;
 public interface ChatDAO {
 
     boolean sendGroupMessage(GroupChat groupChat);
+    boolean sendFriendMessage(FriendChat friendChat);
+    Object getFriendMessages(int uid, int friendId);
 }

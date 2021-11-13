@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("/api")
 public class ChatController {
@@ -17,8 +19,27 @@ public class ChatController {
     private ChatService chatService;
 
     @PostMapping("/chat/groupchat")
-    public boolean sendGroupMessage(GroupChat groupChat){
+    public boolean sendGroupMessage(@RequestBody GroupChat groupChat){
         return chatService.sendGroupMessage(groupChat);
     }
+
+    @PostMapping("/chat/friendchat")
+    public boolean sendFriendMessage(@RequestBody FriendChat friendChat) {
+        try {
+            return chatService.sendFriendMessage(friendChat);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @GetMapping("/chat/friendchat/{uid}/{friendId}")
+    public Object getfriendMessages(@PathVariable int uid, @PathVariable int friendId) {
+        try {
+            return chatService.getFriendMessages(uid, friendId);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
 
 }

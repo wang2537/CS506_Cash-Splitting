@@ -6,6 +6,7 @@ CREATE
 USE
     cash_splittingTester;
 
+DROP TABLE IF EXISTS friend_chatdb;
 DROP TABLE IF EXISTS group_chatdb;
 DROP TABLE IF EXISTS passworddb;
 DROP TABLE IF EXISTS frienddb;
@@ -88,11 +89,24 @@ CREATE TABLE group_chatdb
     content         VARCHAR(140) NOT NULL, -- single message limit 140 chars
     sendtime        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    PRIMARY KEY (gcid)
-#     FOREIGN KEY (uid)
-#         REFERENCES userdb(uid),
-#     FOREIGN KEY (gid)
-#         REFERENCES groupdb(gid)
+    PRIMARY KEY (gcid),
+    FOREIGN KEY (uid)
+        REFERENCES userdb(uid),
+    FOREIGN KEY (gid)
+        REFERENCES groupdb(gid)
+);
+
+CREATE TABLE friend_chatdb
+(
+    fcid            INT NOT NULL AUTO_INCREMENT,
+    source             INT NOT NULL,
+    destination             INT NOT NULL,   -- this is the sender
+    content         VARCHAR(300) NOT NULL, -- single message limit 300 chars
+    sendtime        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (fcid),
+    FOREIGN KEY (source, destination)
+        REFERENCES frienddb(friend_id, uid)
 );
 
 CREATE TABLE transactiondb
@@ -228,6 +242,40 @@ VALUES (-1, 1, 'yuegu-group', 'invalid');
 # INSERT INTO group_chatdb(gid, uid, content)
 # VALUES (1, 1, 'yuegu-msg');
 
+INSERT INTO friend_chatdb(source, destination, content)
+VALUES (4, 7, 'hallo, nice to meet you');
 
+SELECT SLEEP(1);
 
+INSERT INTO friend_chatdb(source, destination, content)
+VALUES (7, 4, 'hallo, nice to meet you too');
 
+SELECT SLEEP(1);
+
+INSERT INTO friend_chatdb(source, destination, content)
+VALUES (7, 4, 'what\'s your class today?');
+
+SELECT SLEEP(1);
+
+INSERT INTO friend_chatdb(source, destination, content)
+VALUES (4, 7, 'CS506, fucking difficult');
+
+SELECT SLEEP(1);
+
+INSERT INTO friend_chatdb(source, destination, content)
+VALUES (4, 7, 'and CS537, extreme difficult');
+
+SELECT SLEEP(1);
+
+INSERT INTO friend_chatdb(source, destination, content)
+VALUES (4, 7, 'I want them to go to hell');
+
+SELECT SLEEP(1);
+
+INSERT INTO friend_chatdb(source, destination, content)
+VALUES (7, 4, 'oh my friend, don\'t be so depressed, everything will be ok');
+
+SELECT SLEEP(1);
+
+INSERT INTO friend_chatdb(source, destination, content)
+VALUES (7, 4, 'plus you haven\'t pay my money back');

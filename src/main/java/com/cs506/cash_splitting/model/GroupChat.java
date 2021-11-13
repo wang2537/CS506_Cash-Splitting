@@ -21,8 +21,8 @@ public class GroupChat {
     @Column
     private String content = "Empty message";
 
-    @Column
-    private String sendtime = "2021-11-13 13:38:28";
+//    @Column
+//    private String sendtime = "2021-11-13 13:38:28";
 
 
     public int getGid() {
@@ -57,11 +57,11 @@ public class GroupChat {
         this.gcid = gcid;
     }
 
-    public String getSendtime() {
-        return sendtime;
-    }
-
-    public void setSendtime(String sendtime) {
-        this.sendtime = sendtime;
-    }
+//    public String getSendtime() {
+//        return sendtime;
+//    }
+//
+//    public void setSendtime(String sendtime) {
+//        this.sendtime = sendtime;
+//    }
 }

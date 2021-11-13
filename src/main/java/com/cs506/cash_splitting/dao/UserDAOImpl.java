@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -343,6 +344,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public Object updateFriend(Friend friend) {
+        HashMap<Object,Object> result = new HashMap<>();
         Session currSession = entityManager.unwrap(Session.class);
         SQLQuery query = currSession.
                 createSQLQuery("select * from frienddb where friend_id = :friend_id and uid = :uid").
@@ -371,18 +373,22 @@ public class UserDAOImpl implements UserDAO {
         if (friend.getStatus().equals("invalid") && originFriend.getStatus().equals("valid")) {
             originFriend.setStatus(friend.getStatus()); // delete friend
             _originFriend.setStatus(friend.getStatus());
+            // TODO: settle up all related balance bill to paid
             currSession.saveOrUpdate(originFriend);
             currSession.saveOrUpdate(_originFriend);
-            return 1;
+            result.put("result", "Succeed in deleting " + getUserName(originFriend.getFriend_id()));
+            return result;
         }
         if (friend.getStatus().equals("valid") && originFriend.getStatus().equals("invalid")) {
             originFriend.setStatus(friend.getStatus()); // refriend
             _originFriend.setStatus(friend.getStatus());
             currSession.saveOrUpdate(originFriend);
             currSession.saveOrUpdate(_originFriend);
-            return 2;
+            result.put("result", "succeed in adding old friend" + getUserName(originFriend.getFriend_id()));
+            return result;
         }
-        return 3;
+        result.put("result", "error, nothing changed");
+        return result;
     }
 
     @Override
