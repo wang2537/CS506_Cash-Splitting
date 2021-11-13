@@ -6,6 +6,7 @@ CREATE
 USE
     cash_splittingTester;
 
+DROP TABLE IF EXISTS group_chatdb;
 DROP TABLE IF EXISTS passworddb;
 DROP TABLE IF EXISTS frienddb;
 DROP TABLE IF EXISTS friend_appdb;
@@ -77,6 +78,21 @@ CREATE TABLE groupdb
     PRIMARY KEY (gid, uid),
     FOREIGN KEY (uid)
         REFERENCES userdb(uid)
+);
+
+CREATE TABLE group_chatdb
+(
+    gcid            INT NOT NULL AUTO_INCREMENT,
+    gid             INT NOT NULL,
+    uid             INT NOT NULL,   -- this is the sender
+    content         VARCHAR(140) NOT NULL, -- single message limit 140 chars
+    sendtime        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (gcid)
+#     FOREIGN KEY (uid)
+#         REFERENCES userdb(uid),
+#     FOREIGN KEY (gid)
+#         REFERENCES groupdb(gid)
 );
 
 CREATE TABLE transactiondb
@@ -208,6 +224,9 @@ VALUES (1, 2, 'yuegu-group', 'invalid');
 
 INSERT INTO groupdb(gid, uid, groupname, status)
 VALUES (-1, 1, 'yuegu-group', 'invalid');
+
+# INSERT INTO group_chatdb(gid, uid, content)
+# VALUES (1, 1, 'yuegu-msg');
 
 
 

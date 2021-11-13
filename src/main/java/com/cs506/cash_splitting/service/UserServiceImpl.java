@@ -66,7 +66,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean changeGroupname(int gid, String newGroupName) {return userdao.changeGroupname(gid, newGroupName);}
 
-    @Transactional
     @Override
     public Object getGroupname(int uid){ return userdao.getGroupname(uid);}
 
