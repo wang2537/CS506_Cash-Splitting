@@ -36,7 +36,7 @@ public class Transaction {
     private int gid = -1;
 
     @Column
-    private String create_time = "";
+    private String create_time = FriendChat.getStringToday();
 
     public int getSource() {
         return source;
