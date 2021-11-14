@@ -239,8 +239,11 @@ VALUES (1, 2, 'yuegu-group', 'invalid');
 INSERT INTO groupdb(gid, uid, groupname, status)
 VALUES (-1, 1, 'yuegu-group', 'invalid');
 
-# INSERT INTO group_chatdb(gid, uid, content)
-# VALUES (1, 1, 'yuegu-msg');
+INSERT INTO group_chatdb(gid, uid, content)
+VALUES (1, 1, 'I am the boss of the group, aka yuegu');
+
+INSERT INTO group_chatdb(gid, uid, content)
+VALUES (1, 1, 'Call me boss or dalao, you have to');
 
 INSERT INTO friend_chatdb(source, destination, content)
 VALUES (4, 7, 'hallo, nice to meet you');

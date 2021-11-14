@@ -29,4 +29,8 @@ public class ChatServiceImpl implements ChatService{
         return chatdao.getFriendMessages(uid, friendId);
     }
 
+    @Override
+    public Object getGroupMessage(int gid) {
+        return chatdao.getGroupMessage(gid);
+    }
 }

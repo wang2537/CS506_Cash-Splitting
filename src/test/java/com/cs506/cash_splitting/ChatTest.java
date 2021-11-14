@@ -27,7 +27,8 @@ public class ChatTest extends CashApplicationTests{
 
     private FriendChat friendChatTure;
     private FriendChat friendChatFalse;
-
+    private GroupChat groupChat;
+    private GroupChat nonExistGroup;
 
     @Override
     @Before
@@ -43,6 +44,34 @@ public class ChatTest extends CashApplicationTests{
         friendChatFalse.setDestination(2);
         friendChatFalse.setContent("wrong");
         friendChatFalse.setSendtime("2111-11-11 11:11:11");
+
+        groupChat = new GroupChat();
+        groupChat.setContent("for test");
+        groupChat.setGid(1);
+        groupChat.setUid(1);
+
+        nonExistGroup = new GroupChat();
+        nonExistGroup.setUid(2);
+        nonExistGroup.setGid(10);
+    }
+
+    @Test
+    @Transactional
+    public void testSendGroupMessage(){
+        Assertions.assertTrue(chatController.sendGroupMessage(groupChat));
+        Assertions.assertFalse(chatController.sendGroupMessage(nonExistGroup));
+    }
+
+    @Test
+    @Transactional
+    public void testGetGroupMeassge(){
+        Assertions.assertTrue(chatController.sendGroupMessage(groupChat));
+        ArrayList<GroupChat> messageList = (ArrayList<GroupChat>) chatService.getGroupMessage(1);
+        GroupChat groupChat = messageList.get(0);
+        Assertions.assertEquals(groupChat.getGid(), 1);
+        Assertions.assertEquals(groupChat.getUid(), 1);
+        Assertions.assertEquals(groupChat.getContent(), "for test");
+        Assertions.assertEquals(messageList.size(), 4);
     }
 
     @Test

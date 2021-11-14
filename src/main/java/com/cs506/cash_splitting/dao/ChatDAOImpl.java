@@ -55,4 +55,20 @@ public class ChatDAOImpl implements ChatDAO{
         return friendChatList;
     }
 
+    @ResponseBody
+    @Override
+    public Object getGroupMessage(int gid) {
+        Session currSession = entityManager.unwrap(Session.class);
+        SQLQuery query = currSession.createSQLQuery("SELECT * FROM group_chatdb WHERE gid = :gid ORDER BY gcid DESC")
+                .addEntity(GroupChat.class);
+        query.setParameter("gid", gid);
+        List list = query.list();
+        List<GroupChat> groupChatList = new ArrayList<>();
+        for (Object o : list){
+            groupChatList.add((GroupChat) o);
+        }
+        return groupChatList;
+
+    }
+
 }

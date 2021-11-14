@@ -6,5 +6,7 @@ public interface ChatDAO {
 
     boolean sendGroupMessage(GroupChat groupChat);
     boolean sendFriendMessage(FriendChat friendChat);
+
+    Object getGroupMessage(int gid);
     Object getFriendMessages(int uid, int friendId);
 }

@@ -20,7 +20,20 @@ public class ChatController {
 
     @PostMapping("/chat/groupchat")
     public boolean sendGroupMessage(@RequestBody GroupChat groupChat){
-        return chatService.sendGroupMessage(groupChat);
+        try {
+            return chatService.sendGroupMessage(groupChat);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @GetMapping("/chat/groupchat/{gid}")
+    public Object getGroupMessage(@PathVariable int gid){
+        try {
+            return chatService.getGroupMessage(gid);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @PostMapping("/chat/friendchat")
