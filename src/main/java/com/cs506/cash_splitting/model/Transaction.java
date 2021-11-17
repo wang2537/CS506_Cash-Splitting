@@ -12,7 +12,7 @@ public class Transaction {
 
     @Id
     @Column
-    private int tid = 0;
+    private int tid;
 
     @Column
     private int source;
