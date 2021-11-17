@@ -18,6 +18,9 @@ public class UserTest extends CashApplicationTests{
     private UserService userService;
 
     @Autowired
+    private FaqService faqService;
+
+    @Autowired
     private UserDAO userDAO;
 
     public User createUser(){
@@ -183,5 +186,12 @@ public class UserTest extends CashApplicationTests{
         String groupname = obj.getGroupname();
         System.out.println(groupname);
         Assertions.assertEquals(groupname, "yuegu-group");
+    }
+
+    @Test
+    @Transactional
+    public void testGetFaq() {
+        List FaqList = (List) faqService.getAllFaq();
+        Assertions.assertEquals(FaqList.size(), 3);
     }
 }

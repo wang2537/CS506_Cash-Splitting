@@ -1,8 +1,6 @@
 package com.cs506.cash_splitting.dao;
 
 import com.cs506.cash_splitting.model.*;
-
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface UserDAO {

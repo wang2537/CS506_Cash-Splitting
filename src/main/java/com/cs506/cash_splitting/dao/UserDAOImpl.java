@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 

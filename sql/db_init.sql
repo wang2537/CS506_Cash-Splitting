@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS friend_appdb;
 DROP TABLE IF EXISTS transactiondb;
 DROP TABLE IF EXISTS groupdb;
 DROP TABLE IF EXISTS userdb;
+DROP TABLE IF EXISTS faqdb;
 
 
 CREATE TABLE userdb
@@ -129,6 +130,14 @@ CREATE TABLE transactiondb
         REFERENCES userdb(uid),
     FOREIGN KEY (gid)
         REFERENCES groupdb(gid)
+);
+
+CREATE TABLE faqdb
+(
+    faqid               INT NOT NULL AUTO_INCREMENT,
+    question            VARCHAR(300) NOT NULL,
+    answer              VARCHAR(300) NOT NULL DEFAULT 'no answer',
+    PRIMARY KEY (faqid)
 );
 
 INSERT INTO userdb(username, firstname, lastname)
@@ -282,3 +291,17 @@ SELECT SLEEP(1);
 
 INSERT INTO friend_chatdb(source, destination, content)
 VALUES (7, 4, 'plus you haven\'t pay my money back');
+
+INSERT INTO faqdb(question, answer)
+VALUES ('How to transfer money to your friend?',
+        'You cannot transfer money directly in this website,
+you can use the provided link to paypal to conduct transaction');
+
+INSERT INTO faqdb(question, answer)
+VALUES ('How to ensure the user password security',
+        'We use a separate table to store the password of users,
+and each password in using hashcode to store them');
+
+INSERT INTO faqdb(question, answer)
+VALUES ('Who made this application?', 'A group taking CS 506 in UW-Madison')
+

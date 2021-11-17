@@ -1,7 +1,6 @@
 package com.cs506.cash_splitting.service;
 
 import com.cs506.cash_splitting.dao.TransactionDAO;
-import com.cs506.cash_splitting.dao.UserDAO;
 import com.cs506.cash_splitting.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

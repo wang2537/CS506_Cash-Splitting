@@ -1,6 +1,5 @@
 package com.cs506.cash_splitting;
 
-import com.cs506.cash_splitting.dao.*;
 import com.cs506.cash_splitting.model.*;
 import com.cs506.cash_splitting.service.*;
 import com.cs506.cash_splitting.controller.*;
@@ -10,12 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.List;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ChatTest extends CashApplicationTests{
@@ -71,7 +66,7 @@ public class ChatTest extends CashApplicationTests{
         Assertions.assertEquals(groupChat.getGid(), 1);
         Assertions.assertEquals(groupChat.getUid(), 1);
         Assertions.assertEquals(groupChat.getContent(), "for test");
-        Assertions.assertEquals(messageList.size(), 4);
+        Assertions.assertEquals(messageList.size(), 3);
     }
 
     @Test
