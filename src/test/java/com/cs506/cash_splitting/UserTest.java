@@ -1,5 +1,7 @@
 package com.cs506.cash_splitting;
 
+import com.cs506.cash_splitting.controller.FaqController;
+import com.cs506.cash_splitting.controller.UserController;
 import com.cs506.cash_splitting.dao.*;
 import com.cs506.cash_splitting.model.*;
 import com.cs506.cash_splitting.service.*;
@@ -9,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserTest extends CashApplicationTests{
@@ -18,7 +22,10 @@ public class UserTest extends CashApplicationTests{
     private UserService userService;
 
     @Autowired
-    private FaqService faqService;
+    private UserController userController;
+
+    @Autowired
+    private FaqController faqController;
 
     @Autowired
     private UserDAO userDAO;
@@ -35,28 +42,37 @@ public class UserTest extends CashApplicationTests{
     @Transactional
     public void testGetUserNameById(){
         String username = "yuegu";
-        Assertions.assertSame(userService.getUid(username),1);
+        Assertions.assertSame(userController.add(username),1);
     }
 
     @Test
     @Transactional
     public void testGetUidNameByUserName(){
         int uid = 1;
-        Assertions.assertEquals(userService.getUserName(uid),"yuegu");
+        Assertions.assertEquals(userController.add(uid),"yuegu");
     }
 
     @Test
     @Transactional
     public void testLogin(){
         String username = "yuegu";
-        String password = "1450575459";
-        Assertions.assertTrue(userService.login(username, password));
+        String password = "123456";
+        HashMap<String,String> input = new HashMap<>();
+        input.put("username", username);
+        input.put("password", password);
+        HashMap<Object, Object> result = (HashMap<Object, Object>) userController.identify(input);
+        Assertions.assertTrue((Boolean) result.get("Success"));
+        Assertions.assertNotNull(result.get("token"));
+        Assertions.assertEquals(result.get("uid"), 1);
     }
 
     @Test
     @Transactional
     public void testSignUp(){
-        Assertions.assertTrue(userService.addOrUpdateUser(this.createUser()));
+        Map<Object,Object> result = new HashMap<>();
+        result = userController.add(this.createUser());
+        Assertions.assertNotNull(result.get("uid"));
+        System.out.println(result.get("uid"));
     }
 
     @Test
@@ -80,17 +96,17 @@ public class UserTest extends CashApplicationTests{
         friendApp.setSource(1);
         friendApp.setDestination(2);
         friendApp.setAid(6);
-        Assertions.assertTrue(userService.sendFriendRequest(friendApp));
+        Assertions.assertTrue(userController.newFriendRequest(friendApp));
         FriendApp friendApp2 = new FriendApp();
         friendApp2.setSource(1);
         friendApp2.setDestination(2);
         friendApp2.setAid(7);
-        Assertions.assertFalse(userService.sendFriendRequest(friendApp2));
+        Assertions.assertFalse(userController.newFriendRequest(friendApp2));
         FriendApp friendApp3 = new FriendApp();
         friendApp3.setSource(2);
         friendApp3.setDestination(1);
         friendApp3.setAid(8);
-        Assertions.assertTrue(userService.sendFriendRequest(friendApp3));
+        Assertions.assertTrue(userController.newFriendRequest(friendApp3));
 
     }
 
@@ -98,9 +114,9 @@ public class UserTest extends CashApplicationTests{
     @Transactional
     public void testGetFriendRequest() {
         List<FriendApp> empty_list = new ArrayList<>();
-        Assertions.assertNotEquals(userService.getFriendRequest(2), empty_list);
-        Assertions.assertNotEquals(userService.getFriendRequest(5), empty_list);
-        Assertions.assertEquals(userService.getFriendRequest(1), empty_list);
+        Assertions.assertNotEquals(userController.getFriendRequest(2), empty_list);
+        Assertions.assertNotEquals(userController.getFriendRequest(5), empty_list);
+        Assertions.assertEquals(userController.getFriendRequest(1), empty_list);
     }
 
     @Test
@@ -111,14 +127,14 @@ public class UserTest extends CashApplicationTests{
         friendApp.setSource(2);
         friendApp.setDestination(3);
         friendApp.setStatus("approved");
-        Assertions.assertEquals(userService.updateFriendApp(friendApp), true);
-        Assertions.assertEquals(userService.updateFriendApp(friendApp), false);
+        Assertions.assertEquals(userController.updateFriendApp(friendApp), true);
+        Assertions.assertEquals(userController.updateFriendApp(friendApp), false);
         FriendApp friendApp2 = new FriendApp();
         friendApp2.setAid(11);
         friendApp2.setSource(4);
         friendApp2.setDestination(6);
         friendApp2.setStatus("approved");
-        Assertions.assertEquals(userService.updateFriendApp(friendApp2), true);
+        Assertions.assertEquals(userController.updateFriendApp(friendApp2), true);
     }
 
     @Test
@@ -136,14 +152,24 @@ public class UserTest extends CashApplicationTests{
 
     @Test
     @Transactional
+    public void testGetFriendList() {
+        FriendList friendList = (FriendList) userController.getFriend(4);
+        Assertions.assertEquals(friendList.getUser().getUid(), 4);
+        Assertions.assertEquals(friendList.getFriendList().size(), 2);
+        Assertions.assertEquals(friendList.getFriendList().get(0).getUid(), 7);
+    }
+
+
+    @Test
+    @Transactional
     public void testCreateGroup(){
         Group group1 = new Group(2,1, "yueyu-group");
-        Assertions.assertTrue(userService.createGroup(group1));
+        Assertions.assertTrue(userController.createGroup(group1));
         Assertions.assertEquals(group1.getGid(), 2);
 
         // pass an existing gid, it will be ignored and automatically use a new gid
         Group group2 = new Group(1,1, "non-user-group");
-        Assertions.assertTrue(userService.createGroup(group2));
+        Assertions.assertTrue(userController.createGroup(group2));
         Assertions.assertEquals(group2.getGid(), 3);
     }
 
@@ -151,32 +177,32 @@ public class UserTest extends CashApplicationTests{
     @Transactional
     public void testAddMember(){
         // user already in the group
-        Assertions.assertFalse(userService.addMember(1,1));
+        Assertions.assertFalse(userController.addMember(1,1));
         // user not in the group
-        Assertions.assertTrue(userService.addMember(1,3));
+        Assertions.assertTrue(userController.addMember(1,3));
         // no group with this gid
-        Assertions.assertFalse(userService.addMember(5,1));
+        Assertions.assertFalse(userController.addMember(5,1));
         // user used to be in the group
-        Assertions.assertTrue(userService.addMember(1,2));
+        Assertions.assertTrue(userController.addMember(1,2));
     }
 
     @Test
     @Transactional
     public void testQuitGroup(){
         // user not in the group
-        Assertions.assertFalse(userService.quitGroup(1, 2));
-        Assertions.assertFalse(userService.quitGroup(1, 3));
+        Assertions.assertFalse(userController.quit(1, 2));
+        Assertions.assertFalse(userController.quit(1, 3));
         //user in the group
-        Assertions.assertTrue(userService.quitGroup(1, 1));
+        Assertions.assertTrue(userController.quit(1, 1));
     }
 
     @Test
     @Transactional
     public void testChangeGroupName(){
         // group not exist
-        Assertions.assertFalse(userService.changeGroupname(6, "newName"));
+        Assertions.assertFalse(userController.changeGroupName(6, "newName"));
         // group exist
-        Assertions.assertTrue(userService.changeGroupname(1, "newName"));
+        Assertions.assertTrue(userController.changeGroupName(1, "newName"));
     }
 
     @Test
@@ -191,7 +217,7 @@ public class UserTest extends CashApplicationTests{
     @Test
     @Transactional
     public void testGetFaq() {
-        List FaqList = (List) faqService.getAllFaq();
+        List FaqList = (List) faqController.getAllFaq();
         Assertions.assertEquals(FaqList.size(), 3);
     }
 }

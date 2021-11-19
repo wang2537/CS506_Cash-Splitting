@@ -10,6 +10,10 @@ public class FriendList {
         return user;
     }
 
+    public FriendList() {
+
+    }
+
     public FriendList(User user, List<User> friendList) {
         this.user = user;
         this.friendList = friendList;
