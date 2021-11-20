@@ -4,28 +4,31 @@ import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Entity
-@Table (name = GroupChat.TABLE_NAME)
-public class GroupChat {
+public class GroupChatWithName {
 
     public static final String TABLE_NAME = "group_chatdb";
 
-    @Id
-    @Column
     private int gcid;
 
-    @Column
     private int gid;
 
-    @Column
     private int uid;
 
-    @Column
+    private String username;
+
     private String content = "Empty message";
 
-    @Column
     private String sendtime = getStringToday();
 
+    public GroupChatWithName(GroupChat groupChat){
+        this.content = groupChat.getContent();
+        this.gcid = groupChat.getGcid();
+        this.gid = groupChat.getGid();
+        this.uid = groupChat.getUid();
+        this.sendtime = groupChat.getSendtime();
+        this.username = " ";
+
+    }
 
     public int getGid() {
         return gid;
@@ -59,10 +62,9 @@ public class GroupChat {
         this.gcid = gcid;
     }
 
-    public String getSendtime() {
-        return sendtime;
+    public void setUsername(String username) {
+        this.username = username;
     }
-
 
     public static String getStringToday() {
         Date currentTime = new Date();
@@ -72,3 +74,4 @@ public class GroupChat {
 
 
 }
+

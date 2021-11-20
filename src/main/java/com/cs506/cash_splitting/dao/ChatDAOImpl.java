@@ -2,6 +2,8 @@ package com.cs506.cash_splitting.dao;
 
 import com.cs506.cash_splitting.model.FriendChat;
 import com.cs506.cash_splitting.model.GroupChat;
+import com.cs506.cash_splitting.model.GroupChatWithName;
+import com.cs506.cash_splitting.model.User;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,12 +62,19 @@ public class ChatDAOImpl implements ChatDAO{
                 .addEntity(GroupChat.class);
         query.setParameter("gid", gid);
         List list = query.list();
-        List<GroupChat> groupChatList = new ArrayList<>();
+        List<GroupChatWithName> groupChatList = new ArrayList<>();
         for (Object o : list){
-            groupChatList.add((GroupChat) o);
+            GroupChatWithName g = new GroupChatWithName((GroupChat) o);
+            g.setUsername(getUserName(g.getUid()));
+            groupChatList.add(g);
         }
         return groupChatList;
 
+    }
+
+    public String getUserName(int uid) {
+        Session currSession = entityManager.unwrap(Session.class);
+        return currSession.get(User.class, uid).getUsername();
     }
 
 }
