@@ -1,6 +1,8 @@
 package com.cs506.cash_splitting.model;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 @Table (name = GroupChat.TABLE_NAME)
@@ -21,6 +23,8 @@ public class GroupChat {
     @Column
     private String content = "Empty message";
 
+    @Column
+    private String sendtime = getStringToday();
 
 
     public int getGid() {
@@ -53,6 +57,12 @@ public class GroupChat {
 
     public void setGcid(int gcid) {
         this.gcid = gcid;
+    }
+
+    public static String getStringToday() {
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return formatter.format(currentTime);
     }
 
 }
