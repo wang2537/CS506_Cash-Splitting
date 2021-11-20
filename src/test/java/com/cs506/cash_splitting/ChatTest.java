@@ -61,8 +61,8 @@ public class ChatTest extends CashApplicationTests{
     @Transactional
     public void testGetGroupMeassge(){
         Assertions.assertTrue(chatController.sendGroupMessage(groupChat));
-        ArrayList<GroupChat> messageList = (ArrayList<GroupChat>) chatService.getGroupMessage(1);
-        GroupChat groupChat = messageList.get(0);
+        ArrayList<GroupChatWithName> messageList = (ArrayList<GroupChatWithName>) chatService.getGroupMessage(1);
+        GroupChatWithName groupChat = messageList.get(0);
         Assertions.assertEquals(groupChat.getGid(), 1);
         Assertions.assertEquals(groupChat.getUid(), 1);
         Assertions.assertEquals(groupChat.getContent(), "for test");
