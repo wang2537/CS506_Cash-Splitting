@@ -66,6 +66,19 @@ public class GroupChatWithName {
         this.username = username;
     }
 
+    public String getSendtime() {
+        return sendtime;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setSendtime(String sendtime) {
+        this.sendtime = sendtime;
+    }
+
+
     public static String getStringToday() {
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
