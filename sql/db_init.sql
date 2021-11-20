@@ -270,27 +270,27 @@ VALUES (7, 4, 'what\'s your class today?');
 SELECT SLEEP(1);
 
 INSERT INTO friend_chatdb(source, destination, content)
-VALUES (4, 7, 'CS506, fucking difficult');
+VALUES (4, 7, 'CS506, and CS537, they are challenging but interesting');
 
 SELECT SLEEP(1);
 
 INSERT INTO friend_chatdb(source, destination, content)
-VALUES (4, 7, 'and CS537, extreme difficult');
+VALUES (4, 7, 'and I love them very much');
 
 SELECT SLEEP(1);
 
 INSERT INTO friend_chatdb(source, destination, content)
-VALUES (4, 7, 'I want them to go to hell');
+VALUES (4, 7, 'I highly recommend you to take these courses in the next semester');
 
 SELECT SLEEP(1);
 
 INSERT INTO friend_chatdb(source, destination, content)
-VALUES (7, 4, 'oh my friend, don\'t be so depressed, everything will be ok');
+VALUES (7, 4, 'Okey, I will consider your suggestion');
 
 SELECT SLEEP(1);
 
 INSERT INTO friend_chatdb(source, destination, content)
-VALUES (7, 4, 'plus you haven\'t pay my money back');
+VALUES (7, 4, 'plus you haven\'t pay my money back, pls pay it');
 
 INSERT INTO faqdb(question, answer)
 VALUES ('How to transfer money to your friend?',
