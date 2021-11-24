@@ -40,4 +40,14 @@ public class TransactionServiceImpl implements TransactionService{
     public Object updateOneTransaction(int tid) {
         return transactionDAO.updateOneTransaction(tid);
     }
+
+    @Override
+    public Object getReminder(int uid) {
+        return transactionDAO.getReminder(uid);
+    }
+    @Transactional
+    @Override
+    public Object settleAll(int source, int destination, String currency) {
+        return transactionDAO.settleAll(source,destination,currency);
+    }
 }

@@ -1,8 +1,11 @@
 package com.cs506.cash_splitting.dao;
 
+import com.cs506.cash_splitting.model.Friend;
 import com.cs506.cash_splitting.model.Transaction;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -32,30 +35,11 @@ public class TransactionDAOImpl implements TransactionDAO{
     @Override
     public Object createTransaction(Transaction transaction) {
         Session currSession = entityManager.unwrap(Session.class);
-        currSession.saveOrUpdate(transaction);
-//        if (transaction.getCurrency().equals("USD")){
-//        int source_id = transaction.getSource();
-//        int destination_id = transaction.getDestination();
-//        double amount = transaction.getAmount();
-//        //set source
-//        User source = currSession.get(User.class, source_id);
-//        double lent = source.getLent();
-//        double src_balance = source.getTotal_balance();
-//        BigDecimal bg3 = new BigDecimal(amount+lent);
-//        source.setLent(bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-//        BigDecimal bg = new BigDecimal(src_balance-amount);
-//        source.setTotal_balance(bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-//        //set destination
-//        User destination = currSession.get(User.class, destination_id);
-//        double borrow = destination.getBorrowed();
-//        double des_balance = destination.getTotal_balance();
-//        BigDecimal bg4 = new BigDecimal(borrow+amount);
-//        destination.setBorrowed(bg4.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-//        BigDecimal bg2 = new BigDecimal(des_balance+amount);
-//        destination.setTotal_balance(bg2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-//        currSession.saveOrUpdate(source);
-//        currSession.saveOrUpdate(destination);
-//        }
+//        currSession.saveOrUpdate(transaction);
+        Query query = currSession.createSQLQuery("select MAX(tid) from transactiondb");
+        int new_id = (Integer) query.getResultList().get(0) +1;
+        transaction.setTid(new_id);
+        entityManager.merge(transaction);
         return true;
     }
 
@@ -103,12 +87,46 @@ public class TransactionDAOImpl implements TransactionDAO{
     @Override
     public Object updateOneTransaction(int tid) {
         Session currSession = entityManager.unwrap(Session.class);
-        Query query = currSession.createSQLQuery("select * from transactiondb where tid = :tid").addEntity(Transaction.class);
+        Query query = currSession.createSQLQuery("select * from transactiondb where tid = :tid").addEntity(Transaction.class).addEntity(Transaction.class);
         query.setParameter("tid", tid);
         Transaction transaction = (Transaction) query.getResultList().get(0);
         transaction.setStatus("paid");
         currSession.saveOrUpdate(transaction);
         return true;
 
+    }
+
+    @Override
+    public Object getReminder(int uid) {
+        Session currSession = entityManager.unwrap(Session.class);
+        SQLQuery query = currSession.createSQLQuery("select * from transactiondb m1 where m1.destination = :userid " +
+                "and datediff(CURRENT_TIMESTAMP,m1.create_time) >= 7 and status = :sta1  ").addEntity(Transaction.class);
+        query.setParameter("userid", uid);
+        query.setParameter("sta1", "unpaid");
+        List<Transaction>  reminder =  new ArrayList<>();
+        List list = query.list();
+        for (Object o : list){
+            Transaction tmp = (Transaction) o;
+            reminder.add(tmp);
+        }
+        return reminder;
+    }
+
+    @Override
+    public Object settleAll(int source, int destination, String currency) {
+        Session currSession = entityManager.unwrap(Session.class);
+        SQLQuery query = currSession.createSQLQuery("select * from transactiondb where source = :source and " +
+                "destination = :destination and status = :sta and currency = :currency").addEntity(Transaction.class);
+        query.setParameter("source", source);
+        query.setParameter("destination", destination);
+        query.setParameter("sta","unpaid");
+        query.setParameter("currency", currency);
+        List list = query.list();
+        for (Object o : list){
+            Transaction tmp = (Transaction) o;
+            ((Transaction) o).setStatus("paid");
+            entityManager.merge(o);
+        }
+        return true;
     }
 }

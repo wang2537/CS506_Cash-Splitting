@@ -9,4 +9,6 @@ public interface TransactionDAO {
     double double_two(double number);
     Object getTransaction(int uid);
     Object updateOneTransaction(int tid);
+    Object getReminder(int uid);
+    Object settleAll(int source, int destination, String currency);
 }

@@ -8,5 +8,7 @@ public interface TransactionService {
     Object getBalance(int src_id, int des_id);
     Object getTransaction(int uid);
     Object updateOneTransaction(int tid);
+    Object getReminder(int uid);
+    Object settleAll(int source, int destination, String currency);
 
 }
