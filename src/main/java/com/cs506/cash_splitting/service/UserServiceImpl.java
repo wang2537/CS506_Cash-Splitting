@@ -96,4 +96,19 @@ public class UserServiceImpl implements UserService{
     public Object getFriend(int uid) {
         return userdao.getFriend(uid);
     }
+
+    @Transactional
+    @Override
+    public Object sendReminder(int source, int destination){ return userdao.sendReminder(source, destination);}
+
+    @Transactional
+    @Override
+    public boolean updateReminder(int rid){
+        return userdao.updateReminder(rid);
+    }
+
+    @Override
+    public Object getReminder(int destination){
+        return userdao.getReminder(destination);
+    }
 }

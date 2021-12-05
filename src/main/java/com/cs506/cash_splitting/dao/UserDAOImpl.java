@@ -403,4 +403,66 @@ public class UserDAOImpl implements UserDAO {
         return new FriendList(user, friendList);
     }
 
+    @Override
+    @ResponseBody
+    public Object sendReminder(int source, int destination){
+        Session currSession = entityManager.unwrap(Session.class);
+        Reminder r = new Reminder();
+        r.setDestination(destination);
+        r.setSource(source);
+        currSession.saveOrUpdate(r);
+        return true;
+    }
+
+    @Override
+    public boolean updateReminder(int rid){
+        Session currSession = entityManager.unwrap(Session.class);
+        SQLQuery query = currSession.
+                createSQLQuery("select * from reminderdb where rid = :rid and status = 'pending'").
+                addEntity(Reminder.class);
+        query.setParameter("rid", rid);
+        List reminder_list = query.list();
+        if (!reminder_list.isEmpty()) {
+            Reminder r = (Reminder) reminder_list.get(0);
+            r.setStatus("received");
+            currSession.saveOrUpdate(r);
+        }
+        else{
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    @ResponseBody
+    public Object getReminder(int destination){
+        Session currSession = entityManager.unwrap(Session.class);
+        List<Object> allReminderList = new ArrayList<>();
+        SQLQuery reminder_query = currSession.
+                createSQLQuery("select * from reminderdb where destination = :destination and status = 'pending'").addEntity(Reminder.class);
+        reminder_query.setParameter("destination", destination);
+        List list = reminder_query.list();
+        List<Reminder>  reminders= new ArrayList<>();
+        for (Object o : list){
+            Reminder r = (Reminder) o;
+            reminders.add(r);
+        }
+
+        for(Reminder i : reminders){
+            Query query = currSession.createSQLQuery("select * from transactiondb where source = :source and destination = :destination order by create_time ASC ").addEntity(Transaction.class);
+            query.setParameter("source", i.getSource());
+            query.setParameter("destination", destination);
+            List list2 = query.getResultList();
+            List<Transaction> transactionList = new ArrayList<>();
+            for (Object o : list2){
+                Transaction t = (Transaction) o;
+                transactionList.add(t);
+            }
+
+            allReminderList.add(new ReminderList(i.getRid(), i.getSource(), destination, transactionList));
+        }
+
+        return allReminderList;
+    }
+
 }

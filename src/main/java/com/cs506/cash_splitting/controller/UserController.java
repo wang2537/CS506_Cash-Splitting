@@ -113,6 +113,20 @@ public class UserController {
         return result;
     }
 
+    @PostMapping("/user/reminder/{source}/{destination}")
+    public Object sendReminder(@PathVariable("source") int source, @PathVariable("destination") int destination){
+        return userService.sendReminder(source, destination);
+    }
+
+    @GetMapping("/user/reminder/{destination}")
+    public Object getReminder(@PathVariable("destination") int destination){
+        return userService.getReminder(destination);
+    }
+
+    @PostMapping("/user/reminder/update/{rid}")
+    public boolean updateReminder(@PathVariable("rid") int rid){
+        return userService.updateReminder(rid);
+    }
 
 
 

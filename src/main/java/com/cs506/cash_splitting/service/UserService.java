@@ -22,4 +22,8 @@ public interface UserService {
     Object updateFriendApp(FriendApp friendApp);
     Object updateFriend(Friend friend);
     Object getFriend(int uid);
+
+    Object sendReminder(int source, int destination);
+    boolean updateReminder(int rid);
+    Object getReminder(int destination);
 }

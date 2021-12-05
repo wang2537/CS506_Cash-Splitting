@@ -319,5 +319,17 @@ VALUES ('How to ensure the user password security',
 and each password in using hashcode to store them');
 
 INSERT INTO faqdb(question, answer)
-VALUES ('Who made this application?', 'A group taking CS 506 in UW-Madison')
+VALUES ('Who made this application?', 'A group taking CS 506 in UW-Madison');
+
+INSERT INTO transactiondb(source, destination, amount)
+VALUES (7, 4, 100);
+
+INSERT INTO transactiondb(source, destination, amount)
+VALUES (7, 4, 200);
+
+INSERT INTO transactiondb(source, destination, amount)
+VALUES (7, 4, 500);
+
+INSERT INTO transactiondb(source, destination, amount)
+VALUES (8, 4, 500);
 
