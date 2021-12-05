@@ -87,7 +87,7 @@ public class TransactionDAOImpl implements TransactionDAO{
     @Override
     public Object updateOneTransaction(int tid) {
         Session currSession = entityManager.unwrap(Session.class);
-        Query query = currSession.createSQLQuery("select * from transactiondb where tid = :tid").addEntity(Transaction.class).addEntity(Transaction.class);
+        Query query = currSession.createSQLQuery("select * from transactiondb where tid = :tid").addEntity(Transaction.class);
         query.setParameter("tid", tid);
         Transaction transaction = (Transaction) query.getResultList().get(0);
         transaction.setStatus("paid");
