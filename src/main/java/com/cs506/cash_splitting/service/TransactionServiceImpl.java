@@ -45,6 +45,7 @@ public class TransactionServiceImpl implements TransactionService{
     public Object getReminder(int uid) {
         return transactionDAO.getReminder(uid);
     }
+
     @Transactional
     @Override
     public Object settleAll(int source, int destination, String currency) {

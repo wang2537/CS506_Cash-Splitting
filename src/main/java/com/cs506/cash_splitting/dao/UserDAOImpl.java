@@ -401,6 +401,6 @@ public class UserDAOImpl implements UserDAO {
         }
         User user = currSession.get(User.class, uid);
         return new FriendList(user, friendList);
-
     }
+
 }

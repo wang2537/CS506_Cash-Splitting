@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS group_chatdb;
 DROP TABLE IF EXISTS passworddb;
 DROP TABLE IF EXISTS frienddb;
 DROP TABLE IF EXISTS friend_appdb;
+DROP TABLE IF EXISTS reminderdb;
 DROP TABLE IF EXISTS transactiondb;
 DROP TABLE IF EXISTS groupdb;
 DROP TABLE IF EXISTS userdb;
@@ -64,6 +65,21 @@ CREATE TABLE friend_appdb
     modify_time         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (aid),
+    FOREIGN KEY (source)
+        REFERENCES userdb(uid),
+    FOREIGN KEY (destination)
+        REFERENCES userdb(uid)
+);
+
+CREATE TABLE reminderdb
+(
+    rid                 INT NOT NULL AUTO_INCREMENT, -- auto_increment start with 1
+    source              INT NOT NULL,
+    destination         INT NOT NULL,
+    status              ENUM('received', 'pending') NOT NULL DEFAULT 'pending',
+    modify_time         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (rid),
     FOREIGN KEY (source)
         REFERENCES userdb(uid),
     FOREIGN KEY (destination)
