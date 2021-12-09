@@ -1,9 +1,6 @@
 package com.cs506.cash_splitting.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = Reminder.TABLE_NAME)
@@ -25,6 +22,15 @@ public class Reminder {
 
     @Column
     private String modify_time = FriendApp.getStringToday();
+
+
+    public int getRid() {
+        return this.rid;
+    }
+
+    public void setRid(int rid) {
+        this.rid = rid;
+    }
 
     public int getSource() {
         return source;
@@ -56,13 +62,5 @@ public class Reminder {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public int getRid() {
-        return this.rid;
-    }
-
-    public void setRid(int rid) {
-        this.rid = rid;
     }
 }

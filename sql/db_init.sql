@@ -58,7 +58,7 @@ CREATE TABLE frienddb
 
 CREATE TABLE friend_appdb
 (
-    aid                 INT NOT NULL AUTO_INCREMENT, -- auto_increment start with 1
+    aid                 INT NOT NULL AUTO_INCREMENT,
     source              INT NOT NULL,
     destination         INT NOT NULL,
     status              ENUM('approved', 'denied', 'pending') NOT NULL DEFAULT 'pending',
@@ -73,7 +73,7 @@ CREATE TABLE friend_appdb
 
 CREATE TABLE reminderdb
 (
-    rid                 INT NOT NULL AUTO_INCREMENT, -- auto_increment start with 1
+    rid                 INT NOT NULL AUTO_INCREMENT,
     source              INT NOT NULL,
     destination         INT NOT NULL,
     status              ENUM('received', 'pending') NOT NULL DEFAULT 'pending',
@@ -128,7 +128,7 @@ CREATE TABLE friend_chatdb
 
 CREATE TABLE transactiondb
 (
-    tid                 INT NOT NULL AUTO_INCREMENT, -- auto_increment start with 1
+    tid                 INT NOT NULL AUTO_INCREMENT,
     source              INT NOT NULL,
     destination         INT NOT NULL,
     currency            ENUM('USD', 'CNY', 'EUR', 'JPY', 'GBP', 'SGD', 'CAD', 'AUD') NOT NULL DEFAULT 'USD',
@@ -255,6 +255,12 @@ VALUES (4, 7, 'approved');
 INSERT INTO friend_appdb(source, destination, status)
 VALUES (4, 6, 'pending');
 
+INSERT INTO friend_appdb(source, destination, status)
+VALUES (1, 8, 'pending');
+
+INSERT INTO friend_appdb(source, destination, status)
+VALUES (8, 1, 'pending');
+
 INSERT INTO groupdb(gid, uid, groupname)
 VALUES (1, 1, 'yuegu-group');
 
@@ -321,15 +327,5 @@ and each password in using hashcode to store them');
 INSERT INTO faqdb(question, answer)
 VALUES ('Who made this application?', 'A group taking CS 506 in UW-Madison');
 
-INSERT INTO transactiondb(source, destination, amount)
-VALUES (7, 4, 100);
 
-INSERT INTO transactiondb(source, destination, amount)
-VALUES (7, 4, 200);
-
-INSERT INTO transactiondb(source, destination, amount)
-VALUES (7, 4, 500);
-
-INSERT INTO transactiondb(source, destination, amount)
-VALUES (8, 4, 500);
 

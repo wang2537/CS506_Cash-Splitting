@@ -4,7 +4,7 @@ import com.cs506.cash_splitting.model.*;
 import java.util.List;
 
 public interface UserDAO {
-    Object get();
+//    Object get();
     Object get(String username);
     boolean addOrUpdateUser(User user);
     boolean addOrUpdatePassword(Password password);
@@ -24,7 +24,7 @@ public interface UserDAO {
     Object updateFriend(Friend friend);
     Object getFriend(int uid);
 
-    Object sendReminder(int source, int destination);
+    Object sendReminder(Reminder reminder);
     boolean updateReminder(int rid);
     Object getReminder(int destination);
 }

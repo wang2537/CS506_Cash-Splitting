@@ -27,9 +27,6 @@ public class UserTest extends CashApplicationTests{
     @Autowired
     private FaqController faqController;
 
-    @Autowired
-    private UserDAO userDAO;
-
     public User createUser(){
         User user = new User();
         user.setFirstname("test_firstname");
@@ -116,7 +113,7 @@ public class UserTest extends CashApplicationTests{
         List<FriendApp> empty_list = new ArrayList<>();
         Assertions.assertNotEquals(userController.getFriendRequest(2), empty_list);
         Assertions.assertNotEquals(userController.getFriendRequest(5), empty_list);
-        Assertions.assertEquals(userController.getFriendRequest(1), empty_list);
+        Assertions.assertNotEquals(userController.getFriendRequest(1), empty_list);
     }
 
     @Test
@@ -135,18 +132,32 @@ public class UserTest extends CashApplicationTests{
         friendApp2.setDestination(6);
         friendApp2.setStatus("approved");
         Assertions.assertEquals(userController.updateFriendApp(friendApp2), true);
+
+        FriendApp friendApp3 = new FriendApp();
+        friendApp3.setAid(12);
+        friendApp3.setSource(1);
+        friendApp3.setDestination(8);
+        friendApp3.setStatus("denied");
+        Assertions.assertEquals(userController.updateFriendApp(friendApp3), true);
+
     }
 
     @Test
     @Transactional
     public void testUpdateFriend() {
         Friend friend = new Friend(6, 4);
-        Assertions.assertEquals(userService.updateFriend(friend), "succeed in adding old friend phyTA");
+        HashMap<Object,Object> result1 = new HashMap<>();
+        result1.put("result", "succeed in adding old friend phyTA");
+        Assertions.assertEquals(userController.updateFriend(friend), result1);
         Friend friend1 = new Friend(7, 4);
         friend1.setStatus("invalid");
-        Assertions.assertEquals(userService.updateFriend(friend1), "Succeed in deleting Insipid");
+        HashMap<Object,Object> result2 = new HashMap<>();
+        result2.put("result", "Succeed in deleting Insipid");
+        Assertions.assertEquals(userController.updateFriend(friend1), result2);
         Friend friend2 = new Friend(4, 6);
-        Assertions.assertEquals(userService.updateFriend(friend2), "error, nothing changed");
+        HashMap<Object,Object> result3 = new HashMap<>();
+        result3.put("result", "error, nothing changed");
+        Assertions.assertEquals(userController.updateFriend(friend2), result3);
 
     }
 
@@ -208,7 +219,7 @@ public class UserTest extends CashApplicationTests{
     @Test
     @Transactional
     public void testGetGroupName(){
-        Group obj = (Group) ((ArrayList) userService.getGroupname(1)).get(0);
+        Group obj = (Group) ((ArrayList) userController.getGroupname(1)).get(0);
         String groupname = obj.getGroupname();
         System.out.println(groupname);
         Assertions.assertEquals(groupname, "yuegu-group");
@@ -220,4 +231,16 @@ public class UserTest extends CashApplicationTests{
         List FaqList = (List) faqController.getAllFaq();
         Assertions.assertEquals(FaqList.size(), 3);
     }
+
+    @Test
+    @Transactional
+    public void testGetUserWithName() {
+        User user = (User) userService.get("yuegu");
+        Assertions.assertEquals(user.getUsername(), "yuegu");
+        Assertions.assertEquals(user.getUid(), 1);
+        Assertions.assertEquals(user.getFirstname(), "yueyu");
+        Assertions.assertEquals(user.getLastname(), "wang");
+        Assertions.assertEquals(user.getDefault_currency(), "USD");
+    }
+
 }

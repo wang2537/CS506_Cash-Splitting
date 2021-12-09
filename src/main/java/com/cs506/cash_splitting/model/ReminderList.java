@@ -9,10 +9,6 @@ public class ReminderList {
     private int rid;
     private List<Transaction> transactionList;
 
-    public ReminderList() {
-
-    }
-
     public ReminderList(int rid, int source, int destination, List<Transaction> transactionList) {
         this.rid = rid;
         this.source = source;

@@ -1,9 +1,6 @@
 package com.cs506.cash_splitting.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = Transaction.TABLE_NAME)
@@ -37,6 +34,15 @@ public class Transaction {
 
     @Column
     private String create_time = FriendChat.getStringToday();
+
+
+    public int getTid() {
+        return tid;
+    }
+
+    public void setTid(int tid) {
+        this.tid = tid;
+    }
 
     public int getSource() {
         return source;
@@ -94,14 +100,6 @@ public class Transaction {
         this.gid = gid;
     }
 
-    public int getTid() {
-        return tid;
-    }
-
-    public void setTid(int tid) {
-        this.tid = tid;
-    }
-
     public String getCreate_time() {
         return create_time;
     }
@@ -109,4 +107,5 @@ public class Transaction {
     public void setCreate_time(String create_time) {
         this.create_time = create_time;
     }
+
 }

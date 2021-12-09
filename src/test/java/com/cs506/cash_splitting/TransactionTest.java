@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class TransactionTest extends CashApplicationTests{
@@ -25,6 +23,7 @@ public class TransactionTest extends CashApplicationTests{
     private Transaction transaction2;
     private Transaction transaction3;
     private Transaction transaction4;
+    private Transaction transaction5;
 
     @Before
     @Override
@@ -34,6 +33,8 @@ public class TransactionTest extends CashApplicationTests{
         transaction2 = new Transaction();
         transaction3 = new Transaction();
         transaction4 = new Transaction();
+        transaction5 = new Transaction();
+
 
         transaction1.setTid(1);
         transaction1.setSource(4);
@@ -42,12 +43,14 @@ public class TransactionTest extends CashApplicationTests{
         transaction1.setCurrency("CNY");
         transaction1.setComment("Test transaction CNY");
 
+
         transaction2.setTid(2);
         transaction2.setSource(7);
         transaction2.setDestination(4);
         transaction2.setAmount(49.99);
         transaction2.setCurrency("USD");
         transaction2.setComment("Test transaction USD");
+
 
         transaction3.setTid(3);
         transaction3.setSource(4);
@@ -56,12 +59,21 @@ public class TransactionTest extends CashApplicationTests{
         transaction3.setCurrency("JPY");
         transaction3.setComment("Test transaction JPY");
 
+
         transaction4.setTid(4);
         transaction4.setSource(7);
         transaction4.setDestination(4);
         transaction4.setAmount(5000.00);
         transaction4.setCurrency("CNY");
         transaction4.setComment("Test transaction CNY");
+
+
+        transaction5.setTid(5);
+        transaction5.setSource(4);
+        transaction5.setDestination(7);
+        transaction5.setAmount(3000.00);
+        transaction5.setCurrency("CNY");
+        transaction5.setComment("Test transaction CNY twice");
 
     }
 
@@ -133,6 +145,62 @@ public class TransactionTest extends CashApplicationTests{
         Assertions.assertTrue(individual_balance_after_source.isEmpty());
         List individual_balance_after_dest = (List) transactionController.get_total_balance(7);
         Assertions.assertTrue(individual_balance_after_dest.isEmpty());
+    }
+
+    @Test
+    @Transactional
+    public void testSettleAll() {
+        transactionController.add(transaction1);
+        transactionController.add(transaction2);
+        transactionController.add(transaction3);
+        transactionController.add(transaction4);
+        transactionController.add(transaction5);
+        Map<String, Object> CNYmap = new HashMap<>();
+        CNYmap.put("source", 7);
+        CNYmap.put("destination", 4);
+        CNYmap.put("currency", "CNY");
+        transactionController.settle_all(CNYmap);
+        Map<String, Integer> source_destination = new HashMap<>();
+        source_destination.put("source", 4);
+        source_destination.put("destination", 7);
+        List balance_between_list_after_CNY = (List) transactionController.get_balance(source_destination);
+        Assertions.assertEquals(balance_between_list_after_CNY.size(), 2);
+
+        Map<String, Object> JPYmap = new HashMap<>();
+        JPYmap.put("source", 4);
+        JPYmap.put("destination", 7);
+        JPYmap.put("currency", "JPY");
+        transactionController.settle_all(JPYmap);
+        List balance_between_list_after_JPY = (List) transactionController.get_balance(source_destination);
+        Assertions.assertEquals(balance_between_list_after_JPY.size(), 1);
+        List individual_balance_after_source = (List) transactionController.get_total_balance(4);
+        Assertions.assertFalse(individual_balance_after_source.isEmpty());
+    }
+
+    @Test
+    @Transactional
+    public void testGroupSplit() {
+        Object []source = {1};
+        Object []destination = {2, 3, 4, 5, 6};
+        List <Object> amount = new ArrayList<>();
+        amount.add(10.00);
+        amount.add(20.00);
+        amount.add(30.00);
+        amount.add(40.00);
+        amount.add(60.00);
+        Object []currency = {"USD"};
+        Object []comment = {"Test"};
+        Object []gid = {1};
+        Map<String, List<Object>> map = new HashMap<>();
+        map.put("source", List.of(source));
+        map.put("destination", List.of(destination));
+        map.put("amount", amount);
+        map.put("currency", List.of(currency));
+        map.put("gid", List.of((gid)));
+        map.put("comment", List.of(comment));
+        transactionController.batch_transaction(map);
+        List balanceList = (List) transactionController.get_total_balance(1);
+        Assertions.assertEquals(balanceList.size(), 1);
     }
 
 

@@ -12,11 +12,11 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserDAO userdao;
 
-    @Transactional
-    @Override
-    public Object get() {
-        return userdao.get();
-    }
+//    @Transactional
+//    @Override
+//    public Object get() {
+//        return userdao.get();
+//    }
 
     @Transactional
     @Override
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public Object sendReminder(int source, int destination){ return userdao.sendReminder(source, destination);}
+    public Object sendReminder(Reminder reminder){ return userdao.sendReminder(reminder);}
 
     @Transactional
     @Override

@@ -19,20 +19,20 @@ public class UserDAOImpl implements UserDAO {
     @Autowired
     private EntityManager entityManager;
 
-    @Override
-    @ResponseBody
-    public Object get() {
-        Session currSession = entityManager.unwrap(Session.class);
-        SQLQuery query = currSession.createSQLQuery("select * from userdb").addEntity(User.class);
-        ;
-        List<User> userList = new ArrayList<>();
-        List list = query.list();
-        for (Object o : list) {
-            User user = (User) o;
-            userList.add(user);
-        }
-        return userList;
-    }
+//    @Override
+//    @ResponseBody
+//    public Object get() {
+//        Session currSession = entityManager.unwrap(Session.class);
+//        SQLQuery query = currSession.createSQLQuery("select * from userdb").addEntity(User.class);
+//        ;
+//        List<User> userList = new ArrayList<>();
+//        List list = query.list();
+//        for (Object o : list) {
+//            User user = (User) o;
+//            userList.add(user);
+//        }
+//        return userList;
+//    }
 
     @Override
     @ResponseBody
@@ -405,12 +405,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     @ResponseBody
-    public Object sendReminder(int source, int destination){
+    public Object sendReminder(Reminder reminder){
         Session currSession = entityManager.unwrap(Session.class);
-        Reminder r = new Reminder();
-        r.setDestination(destination);
-        r.setSource(source);
-        currSession.saveOrUpdate(r);
+        currSession.saveOrUpdate(reminder);
         return true;
     }
 

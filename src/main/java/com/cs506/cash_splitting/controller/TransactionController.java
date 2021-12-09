@@ -70,7 +70,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transaction/settleAll")
-    public Object settle_all(@RequestBody Map<String, List<Object>> map) {
-        return transactionService.settleAll((int)map.get("source").get(0),(int)map.get("destination").get(0), (String)map.get("currency").get(0));
+    public Object settle_all(@RequestBody Map<String, Object> map) {
+        return transactionService.settleAll((int)map.get("source"),(int)map.get("destination"), (String)map.get("currency"));
     }
 }

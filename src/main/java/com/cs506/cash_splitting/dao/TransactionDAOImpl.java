@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -33,10 +34,16 @@ public class TransactionDAOImpl implements TransactionDAO{
     }
 
     @Override
+    @Transactional
     public Object createTransaction(Transaction transaction) {
         Session currSession = entityManager.unwrap(Session.class);
 //        currSession.saveOrUpdate(transaction);
         Query query = currSession.createSQLQuery("select MAX(tid) from transactiondb");
+        if (query.getResultList().get(0)==null){
+            transaction.setTid(1);
+            entityManager.merge(transaction);
+            return true;
+        }
         int new_id = (Integer) query.getResultList().get(0) +1;
         transaction.setTid(new_id);
         entityManager.merge(transaction);
@@ -123,6 +130,19 @@ public class TransactionDAOImpl implements TransactionDAO{
         query.setParameter("currency", currency);
         List list = query.list();
         for (Object o : list){
+            Transaction tmp = (Transaction) o;
+            ((Transaction) o).setStatus("paid");
+            entityManager.merge(o);
+        }
+
+        SQLQuery query1 = currSession.createSQLQuery("select * from transactiondb where source = :source and " +
+                "destination = :destination and status = :sta and currency = :currency").addEntity(Transaction.class);
+        query1.setParameter("source", destination);
+        query1.setParameter("destination", source);
+        query1.setParameter("sta","unpaid");
+        query1.setParameter("currency", currency);
+        List list2 = query1.list();
+        for (Object o : list2){
             Transaction tmp = (Transaction) o;
             ((Transaction) o).setStatus("paid");
             entityManager.merge(o);

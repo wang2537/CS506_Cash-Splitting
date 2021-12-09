@@ -113,9 +113,9 @@ public class UserController {
         return result;
     }
 
-    @PostMapping("/user/reminder/{source}/{destination}")
-    public Object sendReminder(@PathVariable("source") int source, @PathVariable("destination") int destination){
-        return userService.sendReminder(source, destination);
+    @PostMapping("/user/sendReminder")
+    public Object sendReminder(@RequestBody Reminder reminder){
+        return userService.sendReminder(reminder);
     }
 
     @GetMapping("/user/reminder/{destination}")

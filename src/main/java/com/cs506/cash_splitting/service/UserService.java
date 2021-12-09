@@ -3,7 +3,7 @@ package com.cs506.cash_splitting.service;
 import com.cs506.cash_splitting.model.*;
 
 public interface UserService {
-    Object get();
+//    Object get();
     Object get(String username);
     String getUserName(int uid);
     boolean addOrUpdateUser(User user);
@@ -23,7 +23,7 @@ public interface UserService {
     Object updateFriend(Friend friend);
     Object getFriend(int uid);
 
-    Object sendReminder(int source, int destination);
+    Object sendReminder(Reminder reminder);
     boolean updateReminder(int rid);
     Object getReminder(int destination);
 }
