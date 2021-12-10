@@ -69,6 +69,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public Object getGroupname(int uid){ return userdao.getGroupname(uid);}
 
+    @Override
+    public Object getGroupMember(int gid) {
+        return userdao.getGroupMember(gid);
+    }
+
     @Transactional
     @Override
     public boolean sendFriendRequest(FriendApp friendApp) {

@@ -17,6 +17,7 @@ public interface UserDAO {
     boolean quitGroup(int gid, int uid);
     boolean changeGroupname(int gid, String newGroupName);
     Object getGroupname(int uid);
+    Object getGroupMember(int gid);
 
     boolean sendFriendRequest(FriendApp friendApp);
     Object getFriendRequest(int uid);

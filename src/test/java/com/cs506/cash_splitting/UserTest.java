@@ -221,8 +221,18 @@ public class UserTest extends CashApplicationTests{
     public void testGetGroupName(){
         Group obj = (Group) ((ArrayList) userController.getGroupname(1)).get(0);
         String groupname = obj.getGroupname();
-        System.out.println(groupname);
-        Assertions.assertEquals(groupname, "yuegu-group");
+        Assertions.assertEquals(groupname, "test-group");
+    }
+
+    @Test
+    @Transactional
+    public void testGetGroupMember() {
+        List <User> memberList = (List<User>) userController.getGroupMember(-2);
+        Assertions.assertEquals(memberList.size(), 4);
+        User user = memberList.get(3);
+        Assertions.assertEquals(user.getUsername(), "lhg");
+        Assertions.assertEquals(user.getEmail(), "lhg@wisc.edu");
+        Assertions.assertEquals(user.getLastname(), "lin");
     }
 
     @Test

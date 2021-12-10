@@ -80,6 +80,11 @@ public class UserController {
         return userService.changeGroupname(gid, newGroupName);
     }
 
+    @GetMapping("/groupMember/{gid}")
+    public Object getGroupMember(@PathVariable("gid") int gid){
+        return userService.getGroupMember(gid);
+    }
+
     @GetMapping("/group/listGroup/{uid}")
     public Object getGroupname(@PathVariable("uid") int uid){
         return userService.getGroupname(uid);

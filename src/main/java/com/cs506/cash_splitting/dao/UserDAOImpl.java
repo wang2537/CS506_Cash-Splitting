@@ -225,6 +225,22 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    @ResponseBody
+    public Object getGroupMember(int gid){
+        Session currSession = entityManager.unwrap(Session.class);
+        SQLQuery query = currSession.createSQLQuery("select uid from groupdb where gid = :gid and status = 'valid'");
+        query.setParameter("gid", gid);
+        List list = query.list();
+        List<User> groupMemberList = new ArrayList<>();
+        for (Object o : list){
+            int uid = (int)o;
+            User currentUser = currSession.get(User.class, uid);
+            groupMemberList.add(currentUser);
+        }
+        return groupMemberList;
+    }
+
+    @Override
     public boolean sendFriendRequest(FriendApp friendApp) {
         Session currSession = entityManager.unwrap(Session.class);
         SQLQuery friend_query = currSession.

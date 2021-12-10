@@ -103,7 +103,7 @@ CREATE TABLE group_chatdb
     gcid            INT NOT NULL AUTO_INCREMENT,
     gid             INT NOT NULL,
     uid             INT NOT NULL,   -- this is the sender
-    content         VARCHAR(140) NOT NULL, -- single message limit 140 chars
+    content         VARCHAR(8000) NOT NULL, -- single message limit 140 chars
     sendtime        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (gcid),
@@ -118,7 +118,7 @@ CREATE TABLE friend_chatdb
     fcid            INT NOT NULL AUTO_INCREMENT,
     source             INT NOT NULL,
     destination             INT NOT NULL,   -- this is the sender
-    content         VARCHAR(300) NOT NULL, -- single message limit 300 chars
+    content         VARCHAR(8000) NOT NULL, -- single message limit 300 chars
     sendtime        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (fcid),
@@ -168,8 +168,8 @@ VALUES ('hyuan63', 'haozhan', 'yuan');
 INSERT INTO userdb(username, firstname, lastname)
 VALUES ('ccc', 'cecheng', 'chen');
 
-INSERT INTO userdb(username, firstname, lastname)
-VALUES ('lhg', 'heguang', 'lin');
+INSERT INTO userdb(username, firstname, lastname, email)
+VALUES ('lhg', 'heguang', 'lin', 'lhg@wisc.edu');
 
 INSERT INTO userdb(username, firstname, lastname)
 VALUES ('phyTA', 'kairui', 'zhang');
@@ -263,6 +263,21 @@ VALUES (8, 1, 'pending');
 
 INSERT INTO groupdb(gid, uid, groupname)
 VALUES (1, 1, 'yuegu-group');
+
+INSERT INTO groupdb(gid, uid, groupname)
+VALUES (-2, 5, 'test-group');
+
+INSERT INTO groupdb(gid, uid, groupname)
+VALUES (-2, 3, 'test-group');
+
+INSERT INTO groupdb(gid, uid, groupname)
+VALUES (-2, 4, 'test-group');
+
+INSERT INTO groupdb(gid, uid, groupname)
+VALUES (-2, 2, 'test-group');
+
+INSERT INTO groupdb(gid, uid, groupname, status)
+VALUES (-2, 1, 'test-group', 'invalid');
 
 INSERT INTO groupdb(gid, uid, groupname, status)
 VALUES (1, 2, 'yuegu-group', 'invalid');
