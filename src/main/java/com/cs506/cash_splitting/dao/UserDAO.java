@@ -19,7 +19,7 @@ public interface UserDAO {
     Object getGroupname(int uid);
     Object getGroupMember(int gid);
 
-    boolean sendFriendRequest(FriendApp friendApp);
+    Object sendFriendRequest(FriendApp friendApp);
     Object getFriendRequest(int uid);
     Object updateFriendApp(FriendApp friendApp);
     Object updateFriend(Friend friend);

@@ -93,17 +93,31 @@ public class UserTest extends CashApplicationTests{
         friendApp.setSource(1);
         friendApp.setDestination(2);
         friendApp.setAid(6);
-        Assertions.assertTrue(userController.newFriendRequest(friendApp));
+        HashMap<Object,Object> result1 = new HashMap<>();
+        result1.put("result", "friendApp sent");
+        Assertions.assertEquals(userController.newFriendRequest(friendApp), result1);
         FriendApp friendApp2 = new FriendApp();
         friendApp2.setSource(1);
         friendApp2.setDestination(2);
         friendApp2.setAid(7);
-        Assertions.assertFalse(userController.newFriendRequest(friendApp2));
+        HashMap<Object,Object> result2 = new HashMap<>();
+        result2.put("result", "already have a friendApp");
+        Assertions.assertEquals(userController.newFriendRequest(friendApp2), result2);
         FriendApp friendApp3 = new FriendApp();
         friendApp3.setSource(2);
-        friendApp3.setDestination(1);
+        friendApp3.setDestination(10);
         friendApp3.setAid(8);
-        Assertions.assertTrue(userController.newFriendRequest(friendApp3));
+        HashMap<Object,Object> result3 = new HashMap<>();
+        result3.put("result", "user not exist");
+        Assertions.assertEquals(userController.newFriendRequest(friendApp3), result3);
+        FriendApp friendApp4 = new FriendApp();
+        friendApp4.setSource(4);
+        friendApp4.setDestination(7);
+        friendApp4.setAid(9);
+        HashMap<Object,Object> result4 = new HashMap<>();
+        result4.put("result", "already add this friend");
+        Assertions.assertEquals(userController.newFriendRequest(friendApp4), result4);
+
 
     }
 

@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public boolean sendFriendRequest(FriendApp friendApp) {
+    public Object sendFriendRequest(FriendApp friendApp) {
         return userdao.sendFriendRequest(friendApp);
     }
 

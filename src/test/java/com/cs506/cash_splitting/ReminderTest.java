@@ -101,7 +101,7 @@ public class ReminderTest extends CashApplicationTests{
         transactionController.add(transaction4);
         transactionController.add(transaction5);
         List<Transaction> reminder = (List<Transaction>) transactionController.get_reminder(4);
-        Assertions.assertEquals(reminder.size(), 4);
+        Assertions.assertEquals(reminder.size(), 5);
     }
 
     @Test

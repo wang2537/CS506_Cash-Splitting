@@ -241,7 +241,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean sendFriendRequest(FriendApp friendApp) {
+    public Object sendFriendRequest(FriendApp friendApp) {
         Session currSession = entityManager.unwrap(Session.class);
         SQLQuery friend_query = currSession.
                 createSQLQuery("select * from frienddb where friend_id = :source and uid = :destination and status = 'valid'").
@@ -250,6 +250,12 @@ public class UserDAOImpl implements UserDAO {
         friend_query.setParameter("destination", friendApp.getDestination());
         List friend_list = friend_query.list();
         if (friend_list.isEmpty()) {
+            SQLQuery check_friend = currSession.createSQLQuery("select * from userdb where uid= :destination").addEntity(User.class);
+            check_friend.setParameter("destination", friendApp.getDestination());
+            List checkList = check_friend.list();
+            if (checkList.isEmpty()) {
+                return "user not exist";
+            }
             SQLQuery query = currSession.
                     createSQLQuery("select * from friend_appdb where source = :source and destination = :destination and status = 'pending'").
                     addEntity(FriendApp.class);
@@ -258,12 +264,12 @@ public class UserDAOImpl implements UserDAO {
             List friend_app_list = query.list();
             if (friend_app_list.isEmpty()) {
                 currSession.saveOrUpdate(friendApp);
-                return true;
+                return "friendApp sent";
             } else {
-                return false;
+                return "already have a friendApp";
             }
         } else {
-            return false;
+            return "already add this friend";
         }
     }
 

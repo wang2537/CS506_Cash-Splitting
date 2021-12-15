@@ -96,8 +96,11 @@ public class UserController {
     }
 
     @PostMapping("/newFriendApp")
-    public boolean newFriendRequest(@RequestBody FriendApp friendApp) {
-        return userService.sendFriendRequest(friendApp);
+    public Object newFriendRequest(@RequestBody FriendApp friendApp) {
+        HashMap<Object,Object> result = new HashMap<>();
+        String value = (String) userService.sendFriendRequest(friendApp);
+        result.put("result", value);
+        return result;
     }
 
     @GetMapping("/{uid}/friendApp")
