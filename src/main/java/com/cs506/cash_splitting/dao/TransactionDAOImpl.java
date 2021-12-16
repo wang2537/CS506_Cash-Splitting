@@ -124,7 +124,7 @@ public class TransactionDAOImpl implements TransactionDAO{
         for (Object o : list){
             Transaction tmp = (Transaction) o;
             reminder.add(tmp);
-            String username = userdao.getUserName(tmp.getDestination());
+            String username = userdao.getUserName(tmp.getSource());
             username_list.add(username);
         }
 
