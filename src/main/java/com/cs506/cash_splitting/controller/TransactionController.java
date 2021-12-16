@@ -56,7 +56,7 @@ public class TransactionController {
         int destination_size = map.get("destination").size();
         for(int i = 0; i < destination_size; i++){
             Transaction transaction = new Transaction();
-            double amount = (double) map.get("amount").get(i);
+            double amount = Double.parseDouble((String)map.get("amount").get(i));
             BigDecimal bg = new BigDecimal(amount);
             transaction.setCurrency((String) map.get("currency").get(0));
             transaction.setComment((String) map.get("comment").get(0));
