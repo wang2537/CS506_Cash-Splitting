@@ -2,12 +2,14 @@ package com.cs506.cash_splitting.dao;
 
 import com.cs506.cash_splitting.model.Friend;
 import com.cs506.cash_splitting.model.Transaction;
+import com.cs506.cash_splitting.model.TransactionWithName;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -86,12 +88,15 @@ public class TransactionDAOImpl implements TransactionDAO{
         Query query = currSession.createSQLQuery("select * from transactiondb where source = :user or destination = :user order by create_time ASC ").addEntity(Transaction.class);
         query.setParameter("user", uid);
         List list = query.getResultList();
-        List<Transaction> transactionList = new ArrayList<>();
+        List<TransactionWithName> transactionWithNameList = new ArrayList<>();
         for (Object o : list){
             Transaction t = (Transaction) o;
-            transactionList.add(t);
+            TransactionWithName tn = new TransactionWithName(t);
+            tn.setSourceName(userdao.getUserName(t.getSource()));
+            tn.setDestinationName(userdao.getUserName(t.getDestination()));
+            transactionWithNameList.add(tn);
         }
-        return transactionList;
+        return transactionWithNameList;
     }
 
     @Override

@@ -183,11 +183,11 @@ public class TransactionTest extends CashApplicationTests{
         Object []source = {1};
         Object []destination = {2, 3, 4, 5, 6};
         List <Object> amount = new ArrayList<>();
-        amount.add(10.00);
-        amount.add(20.00);
-        amount.add(30.00);
-        amount.add(40.00);
-        amount.add(60.00);
+        amount.add("10.00");
+        amount.add("20.00");
+        amount.add("30.00");
+        amount.add("40.00");
+        amount.add("60.00");
         Object []currency = {"USD"};
         Object []comment = {"Test"};
         Object []gid = {1};

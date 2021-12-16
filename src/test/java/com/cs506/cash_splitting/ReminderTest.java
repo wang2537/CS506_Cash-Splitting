@@ -87,7 +87,7 @@ public class ReminderTest extends CashApplicationTests{
         transaction5.setAmount(3000.00);
         transaction5.setCurrency("CNY");
         transaction5.setComment("Test transaction CNY twice");
-        transaction5.setCreate_time("2021-11-30 11:11:11");
+        transaction5.setCreate_time("2021-12-15 11:11:11");
 
 
     }
@@ -100,8 +100,9 @@ public class ReminderTest extends CashApplicationTests{
         transactionController.add(transaction3);
         transactionController.add(transaction4);
         transactionController.add(transaction5);
-        List<Transaction> reminder = (List<Transaction>) transactionController.get_reminder(4);
-        Assertions.assertEquals(reminder.size(), 5);
+        List<Object> reminder = (List<Object>) transactionController.get_reminder(4);
+        List<Transaction> transactionList = (List<Transaction>) reminder.get(0);
+        Assertions.assertEquals(transactionList.size(), 4);
     }
 
     @Test

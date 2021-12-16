@@ -59,7 +59,7 @@ public class ChatTest extends CashApplicationTests{
 
     @Test
     @Transactional
-    public void testGetGroupMeassge(){
+    public void testGetGroupMessage(){
         Assertions.assertTrue(chatController.sendGroupMessage(groupChat));
         ArrayList<GroupChatWithName> messageList = (ArrayList<GroupChatWithName>) chatService.getGroupMessage(1);
         GroupChatWithName groupChat = messageList.get(0);
