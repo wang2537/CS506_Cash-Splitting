@@ -18,8 +18,11 @@ import java.util.List;
 @Repository
 public class TransactionDAOImpl implements TransactionDAO{
 
+
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private UserDAO userdao;
     @Override
     public Object getTotalBalance(int uid) {
         Session currSession = entityManager.unwrap(Session.class);
@@ -111,12 +114,23 @@ public class TransactionDAOImpl implements TransactionDAO{
         query.setParameter("userid", uid);
         query.setParameter("sta1", "unpaid");
         List<Transaction>  reminder =  new ArrayList<>();
+        List<Object> result = new ArrayList<>();
         List list = query.list();
+        if (list.isEmpty()){
+            return result;
+        }
+        List<String> username_list = new ArrayList();
+//        UserDAO userdao = new UserDAOImpl();
         for (Object o : list){
             Transaction tmp = (Transaction) o;
             reminder.add(tmp);
+            String username = userdao.getUserName(tmp.getDestination());
+            username_list.add(username);
         }
-        return reminder;
+
+        result.add(reminder);
+        result.add(username_list);
+        return result;
     }
 
     @Override
